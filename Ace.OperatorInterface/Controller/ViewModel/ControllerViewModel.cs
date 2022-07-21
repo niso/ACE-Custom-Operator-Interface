@@ -20,6 +20,8 @@ namespace Ace.OperatorInterface.Controller.ViewModel
     {
         #region Fields
 
+        // To test Github, make a "Pending Edit" to be seen in the Solution Explorer
+
         public IRecipeManager recipeManager;
         public bool newFlexiBowlRecipeFound;
 
