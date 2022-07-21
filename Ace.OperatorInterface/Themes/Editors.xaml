@@ -1,0 +1,263 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:editors="http://schemas.actiprosoftware.com/winfx/xaml/editors"
+                    xmlns:shared="http://schemas.actiprosoftware.com/winfx/xaml/shared"
+                    xmlns:themes="http://schemas.actiprosoftware.com/winfx/xaml/themes"
+                    xmlns:aceTabControl="clr-namespace:OperatorInterface.Windows.Controls.TabControl">
+            
+    <Style x:Key="AceOnlineButtonBorderStyle" TargetType="{x:Type Border}">
+        <Setter Property="BorderBrush" Value="{DynamicResource common_brushes_window_online_outline_borderbrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+    
+    <SolidColorBrush x:Key="AceDefaultGridBackground" Color="{Binding Color, Source={StaticResource common_brushes_window_common_all_background}}"/>
+    
+    <Style x:Key="AceDefaultDataGridColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource Nx_datagrid_columnHeader_Style}">
+        <Setter Property="MinHeight" Value="22"/>
+        <Setter Property="Padding" Value="2" />
+    </Style>
+
+    <Style x:Key="AceDefaultDataGridStyle" TargetType="{x:Type DataGrid}" BasedOn="{StaticResource Nx_datagrid_Style}">
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="CanUserDeleteRows" Value="False" />
+    </Style>
+
+    <Style x:Key="AceDefaultDataGridRowStyle" TargetType="{x:Type DataGridRow}">
+        <Setter Property="Height" Value="25" />
+    </Style>
+
+    <Style x:Key="AceDataGridCellEditingStyleOnWhiteBG" TargetType="{x:Type TextBox}">
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="ContextMenu">
+            <Setter.Value>
+                <ContextMenu>
+                    <MenuItem Command="ApplicationCommands.Copy" />
+                    <MenuItem Command="ApplicationCommands.Cut" />
+                    <MenuItem Command="ApplicationCommands.Paste" />
+                </ContextMenu>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="AceDefaultCheckBoxStyle" TargetType="{x:Type CheckBox}">
+        <Setter Property="Background" Value="{DynamicResource common_brushes_checkbox_normal_all_background}"/>
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="{DynamicResource common_brushes_checkbox_checked_all_background}"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource common_brushes_checkbox_mouseover_all_background}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="AceDefaultGroupBoxStyle" TargetType="{x:Type GroupBox}">
+        <Setter Property="Foreground" Value="{DynamicResource common_brushes_groupbox_normal_header_foreground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource common_brushes_groupbox_normal_outline_borderbrush}"/>
+        <Setter Property="BorderThickness" Value=".4"/>
+    </Style>
+
+    <Style x:Key="AceDefaultBorderStyle" TargetType="{x:Type Border}">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource common_brushes_window_common_outline_borderbrush}" />
+        <Setter Property="CornerRadius" Value="2" />
+    </Style>
+
+    <Style x:Key="AceDefaultTopLevelMenuItemStyle" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource NX_MenubarMenuItem}">
+    </Style>
+    
+    <Style x:Key="AceDefaultPageBorderStyle" TargetType="{x:Type Border}">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource common_brushes_window_common_outline_borderbrush}" />
+        <Setter Property="CornerRadius" Value="8" />
+    </Style>
+
+    <Style x:Key="AceDefaultTextBoxStyle" TargetType="{x:Type TextBox}">
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+        <Setter Property="Margin" Value="5,0,0,0"/>
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource common_brushes_window_common_outline_borderbrush}" />
+    </Style>
+
+    <Style x:Key="AceWhiteBGBlackFGTextBoxStyle" TargetType="{x:Type TextBox}">
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Background" Value="White" />
+        <Setter Property="Margin" Value="5,0,0,0"/>
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource common_brushes_window_common_outline_borderbrush}" />
+    </Style>
+    
+    <Style x:Key="AceDefaultTextBlockStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+        <Setter Property="Margin" Value="5,0,0,0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="AceDefaultTextBlockStyleOnWhiteBG" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="Black"/>
+    </Style>
+
+    <Style x:Key="AcePasswordBoxStyle" TargetType="PasswordBox">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+
+    <SolidColorBrush x:Key="AceDefaultTextFieldErrorBackground" Color="Yellow"/>
+    
+    <Style x:Key="AceButtonStyleCustomBackground" TargetType="{x:Type Button}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+        <Setter Property="MinWidth" Value="20"/>
+        <Setter Property="MinHeight" Value="20"/>
+        <Setter Property="Padding" Value="4.5,0,4.5,0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <ControlTemplate.Resources>
+                        <Storyboard x:Key="OnMouseOver">
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="over" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                        <Storyboard x:Key="OnMouseLeave">
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="over" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0"/>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+
+                        <Storyboard x:Key="HoverOn">
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="over" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1" />
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+
+                        <Storyboard x:Key="HoverOff">
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="over" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" />
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+
+                        <Storyboard x:Key="PressedOn">
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="down" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1" />
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+
+                        <Storyboard x:Key="PressedOff">
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="on" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" />
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+
+                    </ControlTemplate.Resources>
+                    <Grid x:Name="grid" Background="{x:Null}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="00:00:00.0500000" To="MouseOver"/>
+                                    <VisualTransition GeneratedDuration="00:00:00" To="Pressed"/>
+                                    <VisualTransition GeneratedDuration="00:00:00" To="Disabled"/>
+                                    <VisualTransition From="MouseOver" GeneratedDuration="00:00:00.1000000" To="Normal"/>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal">
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="normal" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="over" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="down" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="disable" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="contentPresenter" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0.3"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="down" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="On">
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="normal" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid x:Name="normal">
+                            <Rectangle Stretch="Fill" Fill="{TemplateBinding Background}" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="Auto"/>
+                            <Border BorderBrush="White" BorderThickness="0,1,0,0" Opacity="0.3" Margin="0,1,0,0"/>
+                        </Grid>
+                        <Grid x:Name="over" Opacity="0.0">
+                            <Rectangle Stretch="Fill" Fill="{TemplateBinding Background}" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Opacity="0.0"/>
+                            <Border Margin="0,1,0,0" Opacity="1.0" BorderBrush="White" BorderThickness="0,1,0,0"/>
+                        </Grid>
+                        <Grid x:Name="down" Opacity="0">
+                            <Rectangle Stretch="Fill" Fill="{TemplateBinding Background}" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="Auto"/>
+                        </Grid>
+                        <Grid x:Name="disable" Opacity="0">
+                            <Rectangle Stretch="Fill" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Fill="{TemplateBinding Background}" Stroke="{x:Null}"  StrokeThickness="0"/>
+                        </Grid>
+                        <Grid x:Name="on" Opacity="0">
+                            <Rectangle Stretch="Fill" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Fill="{TemplateBinding Background}"/>
+                        </Grid>
+                        <Rectangle x:Name="line" Fill="{x:Null}" Stroke="{DynamicResource common_brushes_button_normal_outline_borderbrush}"/>
+                        <Rectangle x:Name="line_focus" Fill="{x:Null}" Stroke="{DynamicResource common_brushes_button_selected_all_background}" StrokeThickness="2" Opacity="0"/>
+                        <ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" >
+                            <ContentPresenter.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Margin" Value="{Binding Padding, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"/>
+                                </Style>
+                            </ContentPresenter.Resources>
+                        </ContentPresenter>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused" Value="true">
+                            <Setter Property="Opacity" TargetName="line_focus" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="FontFamily" Value="IPAPGothic"/>
+    </Style>
+                
+    <Style x:Key="AceAddButtonImageStyle" TargetType="{x:Type Image}">
+        <Setter Property="Source" Value="{Binding Converter={StaticResource AppResImgToImgSrcConvert}, ConverterParameter=add_LightGray}"/>
+        <Setter Property="Width" Value="14"/>
+        <Setter Property="Height" Value="14"/>
+    </Style>
+
+    <Style x:Key="AceDeleteButtonImageStyle" TargetType="{x:Type Image}">
+        <Setter Property="Source" Value="{Binding Converter={StaticResource AppResImgToImgSrcConvert}, ConverterParameter=delete}"/>
+        <Setter Property="Width" Value="14"/>
+        <Setter Property="Height" Value="14"/>
+    </Style>
+</ResourceDictionary>
+

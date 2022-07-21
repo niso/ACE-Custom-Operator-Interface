@@ -1,0 +1,63 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="DockingWindowTitleInactive">White</Color>
+    
+    <Color x:Key="common_Colors_window_common_all_background">#4B4B4F</Color>
+    <Color x:Key="common_Colors_window_edit_all_background">#636366</Color>
+    <Color x:Key="common_Colors_window_common_all_border">#636366</Color>
+
+    <GradientStopCollection x:Key="common_brushes_window_common_header_background_gradientstops">
+        <GradientStop Offset="0.25" Color="#535456"/>
+        <GradientStop Offset="0.46" Color="#2E3133"/>
+        <GradientStop Offset="0.48" Color="#14181A"/>
+        <GradientStop Offset="1.00" Color="#3C3F40"/>
+    </GradientStopCollection>
+    
+    <LinearGradientBrush x:Key="common_brushes_window_common_header_background" StartPoint="0,0" EndPoint="0,1" GradientStops="{StaticResource ResourceKey=common_brushes_window_common_header_background_gradientstops}" />
+    
+    <LinearGradientBrush x:Key="common_brushes_window_online_header_background" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0.00" Color="#FDCD39"/>
+            <GradientStop Offset="0.27" Color="#FAC239"/>
+            <GradientStop Offset="0.49" Color="#FAC239"/>
+            <GradientStop Offset="0.50" Color="#F6C339"/>
+            <GradientStop Offset="1.00" Color="#FFD308"/>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="common_brushes_window_offline_header_background" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0.00" Color="#C5E853"/>
+            <GradientStop Offset="0.27" Color="#A3CA4D"/>
+            <GradientStop Offset="0.49" Color="#A3CA4D"/>
+            <GradientStop Offset="0.50" Color="#8DBE20"/>
+            <GradientStop Offset="1.00" Color="#B7E228"/>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="common_brushes_window_common_header_borderbrush" Color="#000000"/>
+    
+    <SolidColorBrush x:Key="common_brushes_window_common_all_background" Color="#4B4B4F"/>
+
+    <SolidColorBrush x:Key="common_brushes_window_smotion_main_background" Color="#000000"/>
+    
+    <SolidColorBrush x:Key="common_brushes_window_common_outline_borderbrush" Color="#A2A2A2"/>
+    <SolidColorBrush x:Key="common_brushes_window_online_outline_borderbrush" Color="#FEC808"/>
+    <SolidColorBrush x:Key="common_brushes_window_offline_outline_borderbrush" Color="#99CF3C"/>
+    <SolidColorBrush x:Key="overlayview_window_outline_borderbrush" Color="#A2A2A2"/>
+
+    <SolidColorBrush x:Key="common_brushes_window_edit_all_background" Color="#636366"/>
+    <SolidColorBrush x:Key="common_brushes_window_dockSite_mainregion_background" Color="#000000"/>
+
+    <SolidColorBrush x:Key="common_brushes_window_edit_outline_borderbrush" Color="#F8F8F8"/>
+
+    <LinearGradientBrush x:Key="common_brushes_smotion_normal_titlebar_background" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="Gray" Offset="0.0" />
+        <GradientStop Color="#FF4C4E50" Offset="0.1"/>
+        <GradientStop Color="#FF181C1E"  Offset="0.5"/>
+        <GradientStop Color="#FF1F2224" Offset="0.6"/>
+        <GradientStop Color="#FF232728" Offset="0.7"/>
+    </LinearGradientBrush>
+
+</ResourceDictionary>

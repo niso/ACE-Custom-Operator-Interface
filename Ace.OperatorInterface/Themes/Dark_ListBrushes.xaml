@@ -1,0 +1,50 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        
+    <SolidColorBrush x:Key="common_brushes_listitem_normal_oddline_background" Color="#4F5054"/>
+        
+    <SolidColorBrush x:Key="common_brushes_listitem_normal_evenline_background" Color="#5B5B60"/>
+    
+    <SolidColorBrush x:Key="common_brushes_listitem_normal_all_foreground" Color="#FFFFFF"/>
+    
+    <SolidColorBrush x:Key="common_brushes_listitem_normal_columnborder_borderbrush" Color="#000000"/>
+
+    <SolidColorBrush x:Key="common_brushes_listitem_normal_rowborder_borderbrush" Color="Gray"/>
+
+    <SolidColorBrush x:Key="common_brushes_list_normal_outline_borderbrush" Color="Black"/>
+
+    <SolidColorBrush x:Key="common_brushes_list_normal_header_background" Color="#FF3C3D43"/>
+    <Color x:Key="common_color_list_normal_header_background" >#FF3C3D43</Color>
+    
+    <SolidColorBrush x:Key="common_brushes_list_normal_header_borderbrush" Color="#FFFFFF"/>
+
+    <SolidColorBrush x:Key="common_brushes_list_normal_header_foreground" Color="#FFFFFF"/>
+
+    <SolidColorBrush x:Key="common_brushes_ecat_listitem_normal_background" Color="#FFE3E4E6"/>
+
+    <SolidColorBrush x:Key="common_brushes_ecat_listitem_mouseover_background" Color="#FFD3D4D6"/>
+
+    <SolidColorBrush x:Key="common_brushes_ecat_listitem_selected_background" Color="#FF89C2EF"/>
+
+    <SolidColorBrush x:Key="common_brushes_ecat_listitem_mouseoverselected_background" Color="#FF71B5EC"/>
+
+    <SolidColorBrush x:Key="common_brushes_restore_listbox_normal_outline_borderbrush" Color="#4CFFFFFF"/>
+
+    <SolidColorBrush x:Key="common_brushes_listitem_smotion_search_background" Color="DarkGray"/>
+
+    <SolidColorBrush x:Key="common_brushes_listitem_calc_normal_background" Color="#FF808080"/>
+
+    <SolidColorBrush x:Key="common_brushes_listitem_calc_rowheader_background" Color="#636366"/>
+
+    <SolidColorBrush x:Key="common_brushes_listitem_calc_rowheader_foreground" Color="Black"/>
+
+    <SolidColorBrush x:Key="common_brushes_listitem_monitor_normal_background" Color="#FF808080"/>
+
+    <SolidColorBrush x:Key="common_brushes_label_header_configuration_background" Color="Gray"/>
+
+    <SolidColorBrush x:Key="common_brushes_label_alter1_configuration_background" Color="#C0C0C0"/>
+
+    <SolidColorBrush x:Key="common_brushes_label_alter2_configuration_background" Color="#868686"/>
+
+</ResourceDictionary>

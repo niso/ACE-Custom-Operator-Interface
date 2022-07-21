@@ -1,0 +1,13 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        
+    <SolidColorBrush x:Key="common_brushes_groupbox_normal_outline_borderbrush" Color="#D0D0BF"/>
+    
+    <SolidColorBrush x:Key="common_brushes_groupbox_normal_header_foreground" Color="White"/>
+
+    <SolidColorBrush x:Key="common_brushes_groupbox_smotion_header_foreground" Color="#FFFFFF"/>
+
+    <SolidColorBrush x:Key="common_brushes_groupbox_smotion_all_background" Color="#FF717173"/>
+
+</ResourceDictionary>

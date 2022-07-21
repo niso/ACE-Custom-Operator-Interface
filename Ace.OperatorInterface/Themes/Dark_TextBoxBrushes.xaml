@@ -1,0 +1,21 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="common_brushes_textbox_normal_all_background" Color="#E3E4E6"/>
+
+    <SolidColorBrush x:Key="common_brushes_textbox_normal_outline_borderbrush" Color="#B7B7B7"/>
+    
+    <SolidColorBrush x:Key="common_brushes_textbox_normal_all_foreground" Color="#000000"/>
+
+    <SolidColorBrush x:Key="common_brushes_textbox_disabled_all_background" Color="#FFC0C0C0" />
+    
+    <SolidColorBrush x:Key="common_brushes_textbox_disabled_outline_borderbrush" Color="#AAA"/>
+
+    <SolidColorBrush x:Key="common_brushes_textbox_disabled_all_foreground" Color="#888" />
+
+    <SolidColorBrush x:Key="common_brushes_text_normal_configuration_foreground" Color="White"/>
+
+    <SolidColorBrush x:Key="common_brushes_textbox_common_changed_foreground" Color="#A933FF"/>
+    
+</ResourceDictionary>
