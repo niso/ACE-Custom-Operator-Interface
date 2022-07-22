@@ -1156,10 +1156,13 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             try
             {
 
-                var isDefined = Controller.Link.ListR(string.Format("DEFINED({0})", vPlusVariableName));
-                if (isDefined != 0) {
-                    double value = Controller.GetRealValue(vPlusVariableName);
-                    setter(value);
+                var link = Controller?.Link;
+                if (link != null) {
+                    var isDefined = link.ListR(string.Format("DEFINED({0})", vPlusVariableName));
+                    if (isDefined != 0) {
+                        double value = Controller.GetRealValue(vPlusVariableName);
+                        setter(value);
+                    }
                 }
 
                 //LogToFile("GetVPlusValue " + vPlusVariableName + " = " +  value.ToString());
