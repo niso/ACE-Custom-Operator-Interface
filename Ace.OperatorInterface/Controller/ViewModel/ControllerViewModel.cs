@@ -11,6 +11,7 @@ using Ace.Services.NameLookup;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Ace.Communication.Services.Link;
 
 
 namespace Ace.OperatorInterface.Controller.ViewModel
@@ -1073,46 +1074,50 @@ namespace Ace.OperatorInterface.Controller.ViewModel
 
         private void UpdateDisplay()
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(() =>
-            {
-                this.OnPropertyChanged("ConnectionButtonText");
-                this.ConnectionCommand.RaiseCanExecuteChanged();
+            var dispatcher = System.Windows.Application.Current.Dispatcher;
+            try {
+                dispatcher?.Invoke(() => {
+                    this.OnPropertyChanged("ConnectionButtonText");
+                    this.ConnectionCommand.RaiseCanExecuteChanged();
 
 
-                this.OnPropertyChanged("FlexiBowlBackLight");
-                this.OnPropertyChanged("MoveFlipAngle");
-                this.OnPropertyChanged("MoveFlipAcc");
-                this.OnPropertyChanged("MoveFlipDec");
-                this.OnPropertyChanged("MoveFlipSpeed");
-                this.OnPropertyChanged("MoveFlipDelay");
-                this.OnPropertyChanged("MoveFlipCount");
-                this.OnPropertyChanged("MoveAngle");
-                this.OnPropertyChanged("MoveAcc");
-                this.OnPropertyChanged("MoveDec");
-                this.OnPropertyChanged("MoveSpeed");
-                this.OnPropertyChanged("FlipDelay");
-                this.OnPropertyChanged("FlipCount");
-                this.OnPropertyChanged("MoveBlowAngle");
-                this.OnPropertyChanged("MoveBlowAcc");
-                this.OnPropertyChanged("MoveBlowDec");
-                this.OnPropertyChanged("MoveBlowSpeed");
-                this.OnPropertyChanged("MoveBlowTime");
-                this.OnPropertyChanged("BlowTime");
-                this.OnPropertyChanged("MoveBlowFlipAngle");
-                this.OnPropertyChanged("MoveBlowFlipAcc");
-                this.OnPropertyChanged("MoveBlowFlipDec");
-                this.OnPropertyChanged("MoveBlowFlipSpeed");
-                this.OnPropertyChanged("MoveBlowFlipDelay");
-                this.OnPropertyChanged("MoveBlowFlipCount");
-                this.OnPropertyChanged("MoveBlowFlipTime");
-                this.OnPropertyChanged("ShakeCWAngle");
-                this.OnPropertyChanged("ShakeCCWAngle");
-                this.OnPropertyChanged("ShakeAcc");
-                this.OnPropertyChanged("ShakeDec");
-                this.OnPropertyChanged("ShakeSpeed");
+                    this.OnPropertyChanged("FlexiBowlBackLight");
+                    this.OnPropertyChanged("MoveFlipAngle");
+                    this.OnPropertyChanged("MoveFlipAcc");
+                    this.OnPropertyChanged("MoveFlipDec");
+                    this.OnPropertyChanged("MoveFlipSpeed");
+                    this.OnPropertyChanged("MoveFlipDelay");
+                    this.OnPropertyChanged("MoveFlipCount");
+                    this.OnPropertyChanged("MoveAngle");
+                    this.OnPropertyChanged("MoveAcc");
+                    this.OnPropertyChanged("MoveDec");
+                    this.OnPropertyChanged("MoveSpeed");
+                    this.OnPropertyChanged("FlipDelay");
+                    this.OnPropertyChanged("FlipCount");
+                    this.OnPropertyChanged("MoveBlowAngle");
+                    this.OnPropertyChanged("MoveBlowAcc");
+                    this.OnPropertyChanged("MoveBlowDec");
+                    this.OnPropertyChanged("MoveBlowSpeed");
+                    this.OnPropertyChanged("MoveBlowTime");
+                    this.OnPropertyChanged("BlowTime");
+                    this.OnPropertyChanged("MoveBlowFlipAngle");
+                    this.OnPropertyChanged("MoveBlowFlipAcc");
+                    this.OnPropertyChanged("MoveBlowFlipDec");
+                    this.OnPropertyChanged("MoveBlowFlipSpeed");
+                    this.OnPropertyChanged("MoveBlowFlipDelay");
+                    this.OnPropertyChanged("MoveBlowFlipCount");
+                    this.OnPropertyChanged("MoveBlowFlipTime");
+                    this.OnPropertyChanged("ShakeCWAngle");
+                    this.OnPropertyChanged("ShakeCCWAngle");
+                    this.OnPropertyChanged("ShakeAcc");
+                    this.OnPropertyChanged("ShakeDec");
+                    this.OnPropertyChanged("ShakeSpeed");
 
-                return;
-            });
+                    return;
+                });
+
+			} catch {
+			}
         }
 
         /// <summary>
@@ -1145,15 +1150,17 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         /// Get value of indivudual V+ Double from Controller Memory
         /// </summary>
         /// <param name="vPlusVariableName"></param>
-        /// <returns></returns>
-        private double GetVPlusValue(string vPlusVariableName)
+        private void GetVPlusValue(string vPlusVariableName, Action<double> setter)
         {
-            double value;
+
             try
             {
-                //var link = this.Controller.Link;
-                //value = link.ListR(vPlusVariableName);
-                value = Controller.GetRealValue(vPlusVariableName);
+
+                var isDefined = Controller.Link.ListR(string.Format("DEFINED({0})", vPlusVariableName));
+                if (isDefined != 0) {
+                    double value = Controller.GetRealValue(vPlusVariableName);
+                    setter(value);
+                }
 
                 //LogToFile("GetVPlusValue " + vPlusVariableName + " = " +  value.ToString());
             }
@@ -1161,9 +1168,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             {
                 LogToFile("GetVPlusValue exception: " + vPlusVariableName + " " + ex.ToString());
                 OnReportError("** GetVPlusValue  exception: " + vPlusVariableName + " " + ex.ToString() + "**");
-                value = 0;
             }
-            return value;
         }
 
         private void GetAllVPlusValues()
@@ -1171,37 +1176,37 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             if (Controller.IsAlive)
             {
                 // LogToFile("Background Task ... GetAllVPlusValues ... ");
-                MoveFlipAngle = GetVPlusValue("fbl.mf.angle");
-                MoveFlipAcc = GetVPlusValue("fbl.mf.acc");
-                MoveFlipDec = GetVPlusValue("fbl.mf.dec");
-                MoveFlipSpeed = GetVPlusValue("fbl.mf.speed");
-                MoveFlipDelay = GetVPlusValue("fbl.mf.delay");
-                MoveFlipCount = GetVPlusValue("fbl.mf.count");
-                MoveAngle = GetVPlusValue("fbl.m.angle");
-                MoveAcc = GetVPlusValue("fbl.m.acc");
-                MoveDec = GetVPlusValue("fbl.m.dec");
-                MoveSpeed = GetVPlusValue("fbl.m.speed");
-                FlipDelay = GetVPlusValue("fbl.f.delay");
-                FlipCount = GetVPlusValue("fbl.f.count");
-                MoveBlowAngle = GetVPlusValue("fbl.mb.angle");
-                MoveBlowAcc = GetVPlusValue("fbl.mb.acc");
-                MoveBlowDec = GetVPlusValue("fbl.mb.dec");
-                MoveBlowSpeed = GetVPlusValue("fbl.mb.speed");
-                MoveBlowTime = GetVPlusValue("fbl.mb.time");
-                BlowTime = GetVPlusValue("fbl.b.time");
-                MoveBlowFlipAngle = GetVPlusValue("fbl.mbf.angle");
-                MoveBlowFlipAcc = GetVPlusValue("fbl.mbf.acc");
-                MoveBlowFlipDec = GetVPlusValue("fbl.mbf.dec");
-                MoveBlowFlipSpeed = GetVPlusValue("fbl.mbf.speed");
-                MoveBlowFlipDelay = GetVPlusValue("fbl.mbf.delay");
-                MoveBlowFlipCount = GetVPlusValue("fbl.mbf.count");
-                MoveBlowFlipTime = GetVPlusValue("fbl.mbf.time");
-                ShakeCWAngle = GetVPlusValue("fbl.sh.cw");
-                ShakeCCWAngle = GetVPlusValue("fbl.sh.ccw");
-                ShakeAcc = GetVPlusValue("fbl.sh.acc");
-                ShakeDec = GetVPlusValue("fbl.sh.dec");
-                ShakeSpeed = GetVPlusValue("fbl.sh.speed");
-                ShakeCount = GetVPlusValue("fbl.sh.count");
+                GetVPlusValue("fbl.mf.angle", (a) => MoveFlipAngle = a);
+                GetVPlusValue("fbl.mf.acc", (a) => MoveFlipAcc = a);
+                GetVPlusValue("fbl.mf.dec", (a) => MoveFlipDec = a);
+                GetVPlusValue("fbl.mf.speed", (a) => MoveFlipSpeed = a);
+                GetVPlusValue("fbl.mf.delay", (a) => MoveFlipDelay = a);
+                GetVPlusValue("fbl.mf.count", (a) => MoveFlipCount = a);
+                GetVPlusValue("fbl.m.angle", (a) => MoveAngle = a);
+                GetVPlusValue("fbl.m.acc", (a) => MoveAcc = a);
+                GetVPlusValue("fbl.m.dec", (a) => MoveDec = a);
+                GetVPlusValue("fbl.m.speed", (a) => MoveSpeed = a);
+                GetVPlusValue("fbl.f.delay", (a) => FlipDelay = a);
+                GetVPlusValue("fbl.f.count", (a) => FlipCount = a);
+                GetVPlusValue("fbl.mb.angle", (a) => MoveBlowAngle = a);
+                GetVPlusValue("fbl.mb.acc", (a) => MoveBlowAcc = a);
+                GetVPlusValue("fbl.mb.dec", (a) => MoveBlowDec = a);
+                GetVPlusValue("fbl.mb.speed", (a) => MoveBlowSpeed = a);
+                GetVPlusValue("fbl.mb.time", (a) => MoveBlowTime = a);
+                GetVPlusValue("fbl.b.time", (a) => BlowTime = a);
+                GetVPlusValue("fbl.mbf.angle", (a) => MoveBlowFlipAngle = a);
+                GetVPlusValue("fbl.mbf.acc", (a) => MoveBlowFlipAcc = a);
+                GetVPlusValue("fbl.mbf.dec", (a) => MoveBlowFlipDec = a);
+                GetVPlusValue("fbl.mbf.speed", (a) => MoveBlowFlipSpeed = a);
+                GetVPlusValue("fbl.mbf.delay", (a) => MoveBlowFlipDelay = a);
+                GetVPlusValue("fbl.mbf.count", (a) => MoveBlowFlipCount = a);
+                GetVPlusValue("fbl.mbf.time", (a) => MoveBlowFlipTime = a);
+                GetVPlusValue("fbl.sh.cw", (a) => ShakeCWAngle = a);
+                GetVPlusValue("fbl.sh.ccw", (a) => ShakeCCWAngle = a);
+                GetVPlusValue("fbl.sh.acc", (a) => ShakeAcc = a);
+                GetVPlusValue("fbl.sh.dec", (a) => ShakeDec = a);
+                GetVPlusValue("fbl.sh.speed", (a) => ShakeSpeed = a);
+                GetVPlusValue("fbl.sh.count", (a) => ShakeCount = a);
             }
             else
             {
@@ -1307,6 +1312,12 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         /// <param name="success"></param>
         private void UpdateRecipeManager(string vplusVariableName,double previous, double value, out bool success)
         {
+            if (recipeManager == null) {
+                // I am passing true so it will referesh the property display. Not sure if this is needed or not
+                success = true;
+                return;
+            };
+
             if (!Controller.IsAlive)
             {
                 LogToFile("** Update Recipe: No Controller Connection **");
