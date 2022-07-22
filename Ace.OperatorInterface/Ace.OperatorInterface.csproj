@@ -59,6 +59,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackgroundCommandMonitor.cs" />
     <Compile Include="Controller\ControllerCollection.cs" />
     <Compile Include="OperatorInterfaceStatusComponent.cs" />
     <Compile Include="Controller\ViewModel\ControllerViewModel.cs" />
