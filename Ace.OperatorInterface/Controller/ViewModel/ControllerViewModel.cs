@@ -22,7 +22,6 @@ namespace Ace.OperatorInterface.Controller.ViewModel
     {
         #region Fields
 
-
         public ILogService logService;
 
 
@@ -91,8 +90,6 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         /// NameLookupService
         /// </summary>
         protected INameLookupService NameLookupService { get; set; }
-
-        private BackgroundCommandMonitor backgroundMonitor;
 
         /// <summary>
         /// Controller

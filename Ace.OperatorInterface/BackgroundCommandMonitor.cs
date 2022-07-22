@@ -1,7 +1,6 @@
 // Copyright © Omron Robotics and Safety Technologies, Inc. All rights reserved.
 //
 
-using Ace.Services.LogService;
 using System;
 using System.Threading;
 
@@ -11,7 +10,6 @@ namespace Ace.Client {
 	/// </summary>
 	internal class BackgroundCommandMonitor {
 
-		private ILogService logService;
 		private bool run;
 		private Thread thread;
 		private Action operation;
@@ -46,9 +44,7 @@ namespace Ace.Client {
 		/// </summary>
 		/// <param name="logService">The log service.</param>
 		/// <param name="monitorOperation">The monitor operation.</param>
-		public BackgroundCommandMonitor(ILogService logService,
-										Action monitorOperation) {
-			this.logService = logService;
+		public BackgroundCommandMonitor(Action monitorOperation) {
 			this.operation = monitorOperation;
 		}
 
@@ -81,7 +77,6 @@ namespace Ace.Client {
 				}
 			} catch (Exception ex) {
 				ErrorDetected?.Invoke(this, ex);
-				logService.Log("BackgroundCommandMonitor", ex);
 			}
 
 		}

@@ -78,7 +78,7 @@ namespace Ace.OperatorInterface.ViewModel
         /// <summary>
         /// Unhooks the events.
         /// </summary>
-        public void UnhookEvents()
+        public virtual void UnhookEvents()
         {
             try
             {
