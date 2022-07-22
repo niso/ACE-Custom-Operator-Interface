@@ -4,6 +4,8 @@
 using Ace.OperatorInterface.Controller;
 using Ace.Services.NameLookup;
 using Ace.Services.TaskManager;
+using Ace.Client;
+using System;
 
 namespace Ace.OperatorInterface.ViewModel
 {
@@ -18,6 +20,7 @@ namespace Ace.OperatorInterface.ViewModel
         public ICustomTaskStatusComponent CustomTaskStatusComponent { get; private set; }
                 
         public ControllerCollection _controllerItems;
+
         /// <summary>
         /// ControllerItems
         /// </summary>
@@ -30,7 +33,7 @@ namespace Ace.OperatorInterface.ViewModel
                     _controllerItems = value;
                     OnPropertyChanged(nameof(CustomTaskStatusComponent));
             }
-        }        
+        }
 
         /// <summary>
         /// Title

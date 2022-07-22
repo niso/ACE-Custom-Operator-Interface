@@ -22,11 +22,16 @@ namespace Ace.OperatorInterface.ViewModel
         /// </summary>
         public Action<string> ReportError { get; set; }
 
+        /// <summary>
+        /// Method to get executed in BackgroundCommndMonitor class background task
+        /// </summary>
+        public Action BackGroundMonitorDelegate;
+
 
         /// <summary>
         /// Log exceptions and other messages to C:\Temp\log.txt"
         /// </summary>
-        public static Action<string> logMethod;
+        public static Action<string> LogMethodDelegate;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemBase"/> class.
@@ -52,8 +57,8 @@ namespace Ace.OperatorInterface.ViewModel
         /// </summary>
         protected void OnReportError(Exception ex)
         {
-            if (logMethod != null)
-                logMethod("OnReportError Exception " + ex.Message);
+            if (LogMethodDelegate != null)
+                LogMethodDelegate("OnReportError Exception " + ex.Message);
 
             OnReportError(ex.Message);
         }
