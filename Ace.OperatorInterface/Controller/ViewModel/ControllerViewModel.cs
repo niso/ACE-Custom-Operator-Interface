@@ -1377,5 +1377,10 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         {
             System.IO.File.AppendAllText("C:\\temp\\log.txt", text+Environment.NewLine);
         }
+
+        public override void UnhookEvents() {
+            base.UnhookEvents();
+            backgroundMonitor.Stop();
+        }
     }
 }
