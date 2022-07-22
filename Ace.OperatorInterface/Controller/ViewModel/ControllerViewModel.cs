@@ -91,6 +91,8 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         /// </summary>
         protected INameLookupService NameLookupService { get; set; }
 
+        private BackgroundCommandMonitor backgroundMonitor;
+
         /// <summary>
         /// Controller
         /// </summary>
@@ -911,7 +913,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             // Assign method to Action Delegate
             BackGroundMonitorDelegate = GetAllVPlusValues;
 
-            this.backgroundMonitor = new BackgroundCommandMonitor(logService, BackGroundMonitorDelegate);
+            this.backgroundMonitor = new BackgroundCommandMonitor(BackGroundMonitorDelegate);
 
             this.ConnectionHelper = connectionHelper;
             this.ConnectionCommand = new DelegateCommand(ConnectionCommandExecute);
