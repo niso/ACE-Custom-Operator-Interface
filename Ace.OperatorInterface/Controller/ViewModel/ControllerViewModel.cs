@@ -75,8 +75,6 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         #region Properties
 
 
-
-
         /// <summary>
         /// DisplayName
         /// </summary>
@@ -84,8 +82,8 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         {
             get
             {
-            //  return "<" + base.DisplayName + ">";
-                return " "+ base.DisplayName + " ";
+              return "<" + base.DisplayName + ">";
+            //  return " "+ base.DisplayName + " ";
             }
         }
 
@@ -921,6 +919,9 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             this.ConnectionHelper = connectionHelper;
             this.ConnectionCommand = new DelegateCommand(ConnectionCommandExecute);
 
+            LogToFile("Start Background Monitor");
+            backgroundMonitor.Start();
+
             this.UpdateDisplay();
          
         }
@@ -945,8 +946,6 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         {
             try
             {
-                backgroundMonitor.Start();
-
                 Task.Factory.StartNew(() =>
                 {
                     if (!this.Controller.IsAlive)
@@ -961,8 +960,6 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                             LogToFile("Wait Connection");
                         }
                         while (!this.Controller.IsAlive);
-
-
 
                         // Check, if project at least has one RecipeManager
                         var recipeManagers = this.NameLookupService[typeof(IRecipeManager)];
@@ -1016,8 +1013,6 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                                             
                                             // Read all FlexiBowl property values from the controller
                                             Controller.Memory.Pull();
-                                            this.GetAllVPlusValues();
-
                                             break;
 
                                             // Go ahead and save to 'New FlexiBowl Recipe'
@@ -1039,19 +1034,19 @@ namespace Ace.OperatorInterface.Controller.ViewModel
 
                                 // Create and select 'New FlexiBowl Recipe'
                                 LogToFile("No 'New FlexiBowl recipe' found in list. Create and select.");
-                                //  OnReportError("No 'New FlexiBowl recipe' found in list. Create and select.");
-
-                                    if (!CreateAndSelectNewRecipe(recipeManager, "New Flexibowl Recipe"))
-                                    {// Creating 'New FlexiBowl Recipe' failed
-                                        LogToFile("FAILED! Create and select 'New FlexiBowl recipe'");
-                                        OnReportError("FAILED! Create and select 'New FlexiBowl recipe'");
-                                        return;
-                                    };
-                                    // Creating and selecting 'New FlexiBowl Recipe' succeeded
-                                    // Go ahead and save to 'New FlexiBowl Recipe'
-                                }
+                                
+                                if (!CreateAndSelectNewRecipe(recipeManager, "New Flexibowl Recipe"))
+                                {// Creating 'New FlexiBowl Recipe' failed
+                                    LogToFile("FAILED! Create and select 'New FlexiBowl recipe'");
+                                    OnReportError("FAILED! Create and select 'New FlexiBowl recipe'");
+                                    return;
+                                };
+                                
+                                // Creating and selecting 'New FlexiBowl Recipe' succeeded
+                                // Go ahead and save to 'New FlexiBowl Recipe'
+                            }
                         }
-                        LogToFile("Connected");
+                        LogToFile("Controller " + Controller.Name + " Connected");
 
                     }
                     else
@@ -1161,7 +1156,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                 //value = link.ListR(vPlusVariableName);
                 value = Controller.GetRealValue(vPlusVariableName);
 
-                LogToFile("GetVPlusValue " + vPlusVariableName + " = " +  value.ToString());
+                //LogToFile("GetVPlusValue " + vPlusVariableName + " = " +  value.ToString());
             }
             catch (Exception ex)
             {
@@ -1174,38 +1169,46 @@ namespace Ace.OperatorInterface.Controller.ViewModel
 
         private void GetAllVPlusValues()
         {
-            LogToFile("GetAllVPlusValues ... ");
-            MoveFlipAngle = GetVPlusValue("fbl.mf.angle");
-            MoveFlipAcc = GetVPlusValue("fbl.mf.acc");
-            MoveFlipDec = GetVPlusValue("fbl.mf.dec");
-            MoveFlipSpeed = GetVPlusValue("fbl.mf.speed");
-            MoveFlipDelay = GetVPlusValue("fbl.mf.delay");
-            MoveFlipCount = GetVPlusValue("fbl.mf.count");
-            MoveAngle = GetVPlusValue("fbl.m.angle");
-            MoveAcc = GetVPlusValue("fbl.m.acc");
-            MoveDec = GetVPlusValue("fbl.m.dec");
-            MoveSpeed = GetVPlusValue("fbl.m.speed");
-            FlipDelay = GetVPlusValue("fbl.f.delay");
-            FlipCount = GetVPlusValue("fbl.f.count");
-            MoveBlowAngle = GetVPlusValue("fbl.mb.angle");
-            MoveBlowAcc = GetVPlusValue("fbl.mb.acc");
-            MoveBlowDec = GetVPlusValue("fbl.mb.dec");
-            MoveBlowSpeed = GetVPlusValue("fbl.mb.speed");
-            MoveBlowTime = GetVPlusValue("fbl.mb.time");
-            BlowTime = GetVPlusValue("fbl.b.time");
-            MoveBlowFlipAngle = GetVPlusValue("fbl.mbf.angle");
-            MoveBlowFlipAcc = GetVPlusValue("fbl.mbf.acc");
-            MoveBlowFlipDec = GetVPlusValue("fbl.mbf.dec");
-            MoveBlowFlipSpeed = GetVPlusValue("fbl.mbf.speed");
-            MoveBlowFlipDelay = GetVPlusValue("fbl.mbf.delay");
-            MoveBlowFlipCount = GetVPlusValue("fbl.mbf.count");
-            MoveBlowFlipTime = GetVPlusValue("fbl.mbf.time");
-            ShakeCWAngle = GetVPlusValue("fbl.sh.cw");
-            ShakeCCWAngle = GetVPlusValue("fbl.sh.ccw");
-            ShakeAcc = GetVPlusValue("fbl.sh.acc");
-            ShakeDec = GetVPlusValue("fbl.sh.dec");
-            ShakeSpeed = GetVPlusValue("fbl.sh.speed");
-            ShakeCount = GetVPlusValue("fbl.sh.count");
+            if (Controller.IsAlive)
+            {
+                // LogToFile("Background Task ... GetAllVPlusValues ... ");
+                MoveFlipAngle = GetVPlusValue("fbl.mf.angle");
+                MoveFlipAcc = GetVPlusValue("fbl.mf.acc");
+                MoveFlipDec = GetVPlusValue("fbl.mf.dec");
+                MoveFlipSpeed = GetVPlusValue("fbl.mf.speed");
+                MoveFlipDelay = GetVPlusValue("fbl.mf.delay");
+                MoveFlipCount = GetVPlusValue("fbl.mf.count");
+                MoveAngle = GetVPlusValue("fbl.m.angle");
+                MoveAcc = GetVPlusValue("fbl.m.acc");
+                MoveDec = GetVPlusValue("fbl.m.dec");
+                MoveSpeed = GetVPlusValue("fbl.m.speed");
+                FlipDelay = GetVPlusValue("fbl.f.delay");
+                FlipCount = GetVPlusValue("fbl.f.count");
+                MoveBlowAngle = GetVPlusValue("fbl.mb.angle");
+                MoveBlowAcc = GetVPlusValue("fbl.mb.acc");
+                MoveBlowDec = GetVPlusValue("fbl.mb.dec");
+                MoveBlowSpeed = GetVPlusValue("fbl.mb.speed");
+                MoveBlowTime = GetVPlusValue("fbl.mb.time");
+                BlowTime = GetVPlusValue("fbl.b.time");
+                MoveBlowFlipAngle = GetVPlusValue("fbl.mbf.angle");
+                MoveBlowFlipAcc = GetVPlusValue("fbl.mbf.acc");
+                MoveBlowFlipDec = GetVPlusValue("fbl.mbf.dec");
+                MoveBlowFlipSpeed = GetVPlusValue("fbl.mbf.speed");
+                MoveBlowFlipDelay = GetVPlusValue("fbl.mbf.delay");
+                MoveBlowFlipCount = GetVPlusValue("fbl.mbf.count");
+                MoveBlowFlipTime = GetVPlusValue("fbl.mbf.time");
+                ShakeCWAngle = GetVPlusValue("fbl.sh.cw");
+                ShakeCCWAngle = GetVPlusValue("fbl.sh.ccw");
+                ShakeAcc = GetVPlusValue("fbl.sh.acc");
+                ShakeDec = GetVPlusValue("fbl.sh.dec");
+                ShakeSpeed = GetVPlusValue("fbl.sh.speed");
+                ShakeCount = GetVPlusValue("fbl.sh.count");
+            }
+            else
+            {
+                // LogToFile("Background Task ... sleep ");
+                System.Threading.Thread.Sleep(300);
+            }
 
             return;
         }
