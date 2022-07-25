@@ -58,7 +58,7 @@ namespace Ace.OperatorInterface.ViewModel
         /// <summary>
         /// Clears all data from the helper
         /// </summary>
-        protected virtual void Clear()
+        public virtual void Clear()
         {
             foreach (var item in Items)
             {

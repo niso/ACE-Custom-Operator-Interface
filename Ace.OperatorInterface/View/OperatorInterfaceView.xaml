@@ -26,7 +26,7 @@
         <Border Grid.Row="1" x:Name="groupBoxMain" Style="{DynamicResource AceDefaultBorderStyle}" Margin="2,0,2,2">
             <TabControl x:Name="tabControlFlexiBowl" Margin="4">
                 <TabItem x:Name="tabItemFlexiBowlCmd" Header="Flexibowl Commands">
-                    <ListBox x:Name="listBoxControllers" ItemsSource="{Binding ControllerItems.Items}" >
+                    <ListBox x:Name="listBoxControllers" ItemsSource="{Binding Path=ControllerItems.Items}" SelectedItem="{Binding Path=SelectedControllerItem}" >
                         <ListBox.ItemTemplate>
                             <!-- Controller ListBox entries as GroupBoxes -->
                             <DataTemplate>
@@ -73,19 +73,19 @@
                                                 </Grid.RowDefinitions>
                                                 <Label   Grid.Column ="0" Grid.Row="0" Content="Move" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"  Grid.ColumnSpan="4" FontWeight="Normal"/>
                                                 <Label   Grid.Column ="0" Grid.Row="1" Content="Angle" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox x:Name="tbMoveFlipAngle" Grid.Column ="0" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveFlipAngle}"/>
+                                                <TextBox x:Name="tbMoveFlipAngle" Grid.Column ="0" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveFlipAngle}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="1" Grid.Row="1" Content="Acc" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="1" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveFlipAcc}"/>
+                                                <TextBox Grid.Column ="1" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveFlipAcc}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="2" Grid.Row="1" Content="Dec" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="2" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveFlipDec}"/>
+                                                <TextBox Grid.Column ="2" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveFlipDec}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="3" Grid.Row="1" Content="Speed" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="3" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveFlipSpeed}"/>
+                                                <TextBox Grid.Column ="3" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveFlipSpeed}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 
                                                 <Label   Grid.Column ="4" Grid.Row="0" Content="Flip" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.ColumnSpan="2"/>
                                                 <Label   Grid.Column ="4" Grid.Row="1" Content="Delay" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="4" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveFlipDelay}"/>
+                                                <TextBox Grid.Column ="4" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveFlipDelay}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="5" Grid.Row="1" Content="Count" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="5" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveFlipCount}"/>
+                                                <TextBox Grid.Column ="5" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveFlipCount}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
 
                                                 <Button  Grid.Column ="6" Grid.Row="1" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexiBowlCommand}" CommandParameter="MoveFlip" />
                                             </Grid>
@@ -124,13 +124,13 @@
                                                 </Grid.RowDefinitions>
                                                 <Label   Grid.Column ="0" Grid.Row="0" Content="Move" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"  Grid.ColumnSpan="4" FontWeight="Normal"/>
                                                 <Label   Grid.Column ="0" Grid.Row="1" Content="Angle" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="0" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveAngle}"/>
+                                                <TextBox Grid.Column ="0" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveAngle}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="1" Grid.Row="1" Content="Acc" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="1" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveAcc}"/>
+                                                <TextBox Grid.Column ="1" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveAcc}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="2" Grid.Row="1" Content="Dec" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="2" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveDec}"/>
+                                                <TextBox Grid.Column ="2" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveDec}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="3" Grid.Row="1" Content="Speed" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="3" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveSpeed}"/>
+                                                <TextBox Grid.Column ="3" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveSpeed}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
 
                                                 <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexiBowlCommand}" CommandParameter="Move" />
                                             </Grid>
@@ -150,10 +150,10 @@
                                                 </Grid.RowDefinitions>
                                                 <Label   Grid.Column ="0" Grid.Row="0" Content="" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"  Grid.ColumnSpan="4" FontWeight="Normal"/>
                                                 <Label   Grid.Column ="0" Grid.Row="1" Content="Delay" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="0" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding FlipDelay}"/>
+                                                <TextBox Grid.Column ="0" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding FlipDelay}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
 
                                                 <Label   Grid.Column ="1" Grid.Row="1" Content="Count" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="1" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding FlipCount}"/>
+                                                <TextBox Grid.Column ="1" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding FlipCount}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 
                                                 <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexiBowlCommand}" CommandParameter="Flip" />
                                             </Grid>
@@ -176,16 +176,16 @@
                                                 </Grid.RowDefinitions>
                                                 <Label   Grid.Column ="0" Grid.Row="0" Content="Move" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"  Grid.ColumnSpan="4" FontWeight="Normal"/>
                                                 <Label   Grid.Column ="0" Grid.Row="1" Content="Angle" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="0" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveBlowAngle}"/>
+                                                <TextBox Grid.Column ="0" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveBlowAngle}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="1" Grid.Row="1" Content="Acc" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="1" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveBlowAcc}"/>
+                                                <TextBox Grid.Column ="1" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveBlowAcc}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="2" Grid.Row="1" Content="Dec" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="2" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveBlowDec}"/>
+                                                <TextBox Grid.Column ="2" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveBlowDec}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="3" Grid.Row="1" Content="Speed" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="3" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveBlowSpeed}"/>
+                                                <TextBox Grid.Column ="3" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveBlowSpeed}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="4" Grid.Row="0" Content="Blow" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                                                 <Label   Grid.Column ="4" Grid.Row="1" Content="Time" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="4" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveBlowTime}"/>
+                                                <TextBox Grid.Column ="4" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveBlowTime}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
 
                                                 <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexiBowlCommand}" CommandParameter="MoveBlow" />
                                             </Grid>
@@ -204,7 +204,7 @@
                                                 </Grid.RowDefinitions>
                                                 <Label   Grid.Column ="0" Grid.Row="0" Content="" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"  Grid.ColumnSpan="4" FontWeight="Normal"/>
                                                 <Label   Grid.Column ="0" Grid.Row="1" Content="Time" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="0" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding BlowTime}"/>
+                                                <TextBox Grid.Column ="0" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding BlowTime}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
 
                                                 <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexiBowlCommand}" CommandParameter="Blow" />
                                             </Grid>
@@ -229,21 +229,21 @@
                                                 </Grid.RowDefinitions>
                                                 <Label   Grid.Column ="0" Grid.Row="0" Content="Move" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"  Grid.ColumnSpan="4" FontWeight="Normal"/>
                                                 <Label   Grid.Column ="0" Grid.Row="1" Content="Angle" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="0" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveBlowFlipAngle}"/>
+                                                <TextBox Grid.Column ="0" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveBlowFlipAngle}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="1" Grid.Row="1" Content="Acc" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="1" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveBlowFlipAcc}"/>
+                                                <TextBox Grid.Column ="1" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveBlowFlipAcc}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="2" Grid.Row="1" Content="Dec" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="2" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveBlowFlipDec}"/>
+                                                <TextBox Grid.Column ="2" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveBlowFlipDec}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="3" Grid.Row="1" Content="Speed" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="3" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center"  Text="{Binding MoveBlowFlipSpeed}"/>
+                                                <TextBox Grid.Column ="3" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center"  Text="{Binding MoveBlowFlipSpeed}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="4" Grid.Row="0" Content="Flip" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.ColumnSpan="2"/>
                                                 <Label   Grid.Column ="4" Grid.Row="1" Content="Delay" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="4" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center"  Text="{Binding MoveBlowFlipDelay}"/>
+                                                <TextBox Grid.Column ="4" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center"  Text="{Binding MoveBlowFlipDelay}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="5" Grid.Row="1" Content="Count" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="5" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center"  Text="{Binding MoveBlowFlipCount}"/>
+                                                <TextBox Grid.Column ="5" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center"  Text="{Binding MoveBlowFlipCount}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="6" Grid.Row="0" Content="Blow" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                                                 <Label   Grid.Column ="6" Grid.Row="1" Content="Time" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="6" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center"  Text="{Binding MoveBlowFlipTime}"/>
+                                                <TextBox Grid.Column ="6" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center"  Text="{Binding MoveBlowFlipTime}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
 
                                                 <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexiBowlCommand}" CommandParameter="MoveBlowFlip" />
                                             </Grid>
@@ -267,17 +267,17 @@
                                                 </Grid.RowDefinitions>
                                                 <Label   Grid.Column ="0" Grid.Row="0" Content="Angle" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"  Grid.ColumnSpan="2" FontWeight="Normal"/>
                                                 <Label   Grid.Column ="0" Grid.Row="1" Content="CW" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="0" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding ShakeCWAngle}"/>
+                                                <TextBox Grid.Column ="0" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding ShakeCWAngle}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="1" Grid.Row="1" Content="CCW" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="1" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding ShakeCCWAngle}"/>
+                                                <TextBox Grid.Column ="1" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding ShakeCCWAngle}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="2" Grid.Row="1" Content="Acc" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="2" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding ShakeAcc}"/>
+                                                <TextBox Grid.Column ="2" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding ShakeAcc}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="3" Grid.Row="1" Content="Dec" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="3" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding ShakeDec}"/>
+                                                <TextBox Grid.Column ="3" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding ShakeDec}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="4" Grid.Row="1" Content="Speed" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="4" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding ShakeSpeed}"/>
+                                                <TextBox Grid.Column ="4" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding ShakeSpeed}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 <Label   Grid.Column ="5" Grid.Row="1" Content="Count" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <TextBox Grid.Column ="5" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding ShakeCount}"/>
+                                                <TextBox Grid.Column ="5" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding ShakeCount}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
 
                                                 <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexiBowlCommand}" CommandParameter="Shake" />
                                             </Grid>

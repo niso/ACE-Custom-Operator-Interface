@@ -174,6 +174,8 @@ namespace Ace.OperatorInterface
         protected void OnDispose()
         {         
             Element = null;
+            ViewModel?.ClearAllControllers();
+            ViewModel = null;
         }
 
         /// <summary>

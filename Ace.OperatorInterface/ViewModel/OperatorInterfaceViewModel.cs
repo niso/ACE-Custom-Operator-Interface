@@ -6,6 +6,7 @@ using Ace.Services.NameLookup;
 using Ace.Services.TaskManager;
 using Ace.Client;
 using System;
+using Ace.OperatorInterface.Controller.ViewModel;
 
 namespace Ace.OperatorInterface.ViewModel
 {
@@ -18,7 +19,8 @@ namespace Ace.OperatorInterface.ViewModel
         /// CustomTaskStatusComponent
         /// </summary>
         public ICustomTaskStatusComponent CustomTaskStatusComponent { get; private set; }
-                
+
+        private ControllerViewModel selectedControllerItem;
         public ControllerCollection _controllerItems;
 
         /// <summary>
@@ -34,6 +36,19 @@ namespace Ace.OperatorInterface.ViewModel
                     OnPropertyChanged(nameof(CustomTaskStatusComponent));
             }
         }
+
+		/// <summary>
+		/// Gets or sets the selected controller item.
+		/// </summary>
+		public ControllerViewModel SelectedControllerItem {
+			get {
+                return selectedControllerItem;
+            }
+			set {
+                selectedControllerItem = value;
+                OnPropertyChanged(nameof(ControllerViewModel));
+			}
+		}
 
         /// <summary>
         /// Title
@@ -70,5 +85,9 @@ namespace Ace.OperatorInterface.ViewModel
             this.ControllerItems.UpdateControllerList();
             this.OnPropertyChanged(nameof(ControllerItems));
         }
+
+        public void ClearAllControllers() {
+            this.ControllerItems.Clear();
+		}
     }
 }

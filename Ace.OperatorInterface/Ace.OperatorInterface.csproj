@@ -33,13 +33,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ace.Communication">
+    <Reference Include="Ace.Communication, Version=4.4.3.250, Culture=neutral, PublicKeyToken=e79443b8f063fbad, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\Ace.Communication.dll</HintPath>
     </Reference>
-    <Reference Include="Ace.Core">
+    <Reference Include="Ace.Core, Version=4.4.3.250, Culture=neutral, PublicKeyToken=e79443b8f063fbad, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\Ace.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Omron.Cxap.Framework.Core">
+    <Reference Include="Omron.Cxap.Framework.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9f8cd6ce856ce25c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\Omron.Cxap.Framework.Core.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />

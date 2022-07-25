@@ -13,7 +13,7 @@ namespace Ace.Client {
 		private bool run;
 		private Thread thread;
 		private Action operation;
-		private int defaultDelay = 1000;
+		private int defaultDelay = 100;
 
 		/// <summary>
 		/// Should the monitor thread continue to run
