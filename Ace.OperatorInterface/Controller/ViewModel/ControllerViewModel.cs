@@ -186,24 +186,28 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         public double MoveFlipAngle {
             get { return _moveFlipAngle; }
             set {
-                if (_moveFlipAngle != value) {
+                if ((_moveFlipAngle != value) && (Controller.IsAlive)){
 
                     bool success = false;
                     double old = _moveFlipAngle;
+
+                    SetVPlusValue("fbl.mf.angle",old, value, out success);
+                    if (!success)
+                    {
+                        this.UpdateDisplay();
+                        return;
+                    }
 
                     UpdateRecipeManager("fbl.mf.angle",old, value, out success);
                     if (success)
                     {
                         _moveFlipAngle = value;
-                        this.OnPropertyChanged(nameof(MoveFlipAngle));
+                        return;
                     }
 
-                    SetVPlusValue("fbl.mf.angle",old, value, out success);
-                    if (!success)
-                        return;
+                    this.OnPropertyChanged(nameof(MoveFlipAngle));
+                    this.UpdateDisplay();
                 }
-
-                this.UpdateDisplay();
             }
         }
         public double MoveFlipAcc {
@@ -1046,6 +1050,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                                 // Go ahead and save to 'New FlexiBowl Recipe'
                             }
                         }
+
                         LogToFile("Controller " + Controller.Name + " Connected");
 
                     }
@@ -1152,10 +1157,8 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         /// <param name="vPlusVariableName"></param>
         private void GetVPlusValue(string vPlusVariableName, Action<double> setter)
         {
-
             try
             {
-
                 var link = Controller?.Link;
                 if (link != null) {
                     var isDefined = link.ListR(string.Format("DEFINED({0})", vPlusVariableName));
@@ -1317,6 +1320,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         {
             if (recipeManager == null) {
                 // I am passing true so it will referesh the property display. Not sure if this is needed or not
+                LogToFile("recipeManager == null");
                 success = true;
                 return;
             };
@@ -1339,7 +1343,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
 
                 LogToFile("Update '"+recipeManager.Name+
                           "', Recipe '"+recipe.Name+
-                          "', Component'"+component.GetType().Name+
+                      //  "', Component'"+component.GetType().Name+
                           "', Variable '" + variable.Name + "' from " + previous.ToString() + " to " + value.ToString());
                 component.SetRealValue(variable, value);
             }
