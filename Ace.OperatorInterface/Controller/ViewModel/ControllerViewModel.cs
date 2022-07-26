@@ -995,7 +995,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             this.ConnectionHelper = connectionHelper;
             this.ConnectionCommand = new DelegateCommand(ConnectionCommandExecute);
 
-            LogToFile("Start Background Monitor");
+            LogToFile("Start Background Monitor "+controller.Name);
             backgroundMonitor.Start();
 
             this.UpdateDisplay();
@@ -1128,7 +1128,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         {
             try
             {
-                LogToFile("V+ Memory Update:   " + vPlusVariableName + " from " + previous.ToString() + " to "+ value.ToString());
+                LogToFile("V+ Memory Update:     " + vPlusVariableName + " from " + previous.ToString() + " to "+ value.ToString());
 
                 var link = this.Controller.Link;
                 link.SetR(vPlusVariableName, value);
