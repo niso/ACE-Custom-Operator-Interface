@@ -92,6 +92,9 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         /// </summary>
         protected INameLookupService NameLookupService { get; set; }
 
+        /// <summary>
+        /// Background thread to update V+ variable changes
+        /// </summary>
         private BackgroundCommandMonitor backgroundMonitor;
 
         /// <summary>
@@ -969,9 +972,18 @@ namespace Ace.OperatorInterface.Controller.ViewModel
 
 
         /// <summary>
-        /// Flexibowl command (using CommandParameter to differ between commands)
+        /// Flexibowl commands
         /// </summary>
-        public DelegateCommand FlexiBowlCommand { get; private set; }
+        public DelegateCommand FlexibowlCommand_MoveFlip { get; private set; }
+        public DelegateCommand FlexibowlCommand_Move { get; private set; }
+        public DelegateCommand FlexibowlCommand_Flip { get; private set; }
+        public DelegateCommand FlexibowlCommand_MoveBlow { get; private set; }
+        public DelegateCommand FlexibowlCommand_Blow { get; private set; }
+        public DelegateCommand FlexibowlCommand_MoveBlowFlip { get; private set; }
+        public DelegateCommand FlexibowlCommand_Shake { get; private set; }
+        public DelegateCommand FlexibowlCommand_Light { get; private set; }
+        public DelegateCommand FlexibowlCommand_Empty { get; private set; }
+        public DelegateCommand FlexibowlCommand_Reset { get; private set; }
 
         #endregion
 
@@ -990,10 +1002,22 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             // Assign method to Action Delegate
             BackGroundMonitorDelegate = GetAllVPlusValues;
 
+            // Instantiate background monitor, handle over deleagte 
             this.backgroundMonitor = new BackgroundCommandMonitor(BackGroundMonitorDelegate);
 
             this.ConnectionHelper = connectionHelper;
             this.ConnectionCommand = new DelegateCommand(ConnectionCommandExecute);
+
+            this.FlexibowlCommand_MoveFlip = new DelegateCommand(FlexibowlExecute_MoveFlip, CanFlexibowlCommandExecute);
+            this.FlexibowlCommand_Move = new DelegateCommand(FlexibowlExecute_Move, CanFlexibowlCommandExecute);
+            this.FlexibowlCommand_Flip = new DelegateCommand(FlexibowlExecute_Flip, CanFlexibowlCommandExecute);
+            this.FlexibowlCommand_MoveBlow = new DelegateCommand(FlexibowlExecute_MoveBlow, CanFlexibowlCommandExecute);
+            this.FlexibowlCommand_Blow = new DelegateCommand(FlexibowlExecute_Blow, CanFlexibowlCommandExecute);
+            this.FlexibowlCommand_MoveBlowFlip = new DelegateCommand(FlexibowlExecute_MoveBlowFlip, CanFlexibowlCommandExecute);
+            this.FlexibowlCommand_Shake = new DelegateCommand(FlexibowlExecute_Shake, CanFlexibowlCommandExecute);
+            this.FlexibowlCommand_Light = new DelegateCommand(FlexibowlExecute_Light, CanFlexibowlCommandExecute);
+            this.FlexibowlCommand_Empty = new DelegateCommand(FlexibowlExecute_Empty, CanFlexibowlCommandExecute);
+            this.FlexibowlCommand_Reset = new DelegateCommand(FlexibowlExecute_Reset, CanFlexibowlCommandExecute);
 
             LogToFile("Start Background Monitor "+controller.Name);
             backgroundMonitor.Start();
@@ -1057,9 +1081,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         this.ZeroAllVPlusValues(); 
 
                     }
-
                     this.UpdateDisplay();
-
                 });
             }
             catch (Exception ex)
@@ -1069,6 +1091,186 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             }
         }
 
+
+        #region Flexibowl DelegateCommands - method implementations
+
+        /// <summary>
+        /// Check condition for Execute command being valid.
+        /// </summary>
+        /// <returns></returns>
+        private bool CanFlexibowlCommandExecute()
+        {
+           //   TODO-s:
+           //   Check for modern inline implementation as anonyomous method
+           //   Check for V+ variable, indicating "No Q-Seqment running in AppliedMotion Controller (Flexibowl drive)"
+                return Controller.IsAlive;
+        }
+
+        private void FlexibowlExecute_MoveFlip()
+        {
+            try
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    LogToFile("MoveFlip Command");
+                });
+            }
+            catch (Exception ex)
+            {
+                OnReportError(ex);
+            }
+            this.UpdateDisplay();
+        }
+
+        private void FlexibowlExecute_Move()
+        {
+            try
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    LogToFile("Move Command");
+                });
+            }
+            catch (Exception ex)
+            {
+                OnReportError(ex);
+            }
+            this.UpdateDisplay();
+        }
+
+        private void FlexibowlExecute_Flip()
+        {
+            try
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    LogToFile("Flip Command");
+                });
+            }
+            catch (Exception ex)
+            {
+                OnReportError(ex);
+            }
+            this.UpdateDisplay();
+        }
+
+        private void FlexibowlExecute_MoveBlow()
+        {
+            try
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    LogToFile("MoveBlow Command");
+                });
+            }
+            catch (Exception ex)
+            {
+                OnReportError(ex);
+            }
+            this.UpdateDisplay();
+        }
+
+        private void FlexibowlExecute_Blow()
+        {
+            try
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    LogToFile("Blow Command");
+                });
+            }
+            catch (Exception ex)
+            {
+                OnReportError(ex);
+            }
+            this.UpdateDisplay();
+        }
+
+        private void FlexibowlExecute_MoveBlowFlip()
+        {
+            try
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    LogToFile("MoveBlowFlip Command");
+                });
+            }
+            catch (Exception ex)
+            {
+                OnReportError(ex);
+            }
+            this.UpdateDisplay();
+        }
+
+        private void FlexibowlExecute_Shake()
+        {
+            try
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    LogToFile("Shake Command");
+                });
+            }
+            catch (Exception ex)
+            {
+                OnReportError(ex);
+            }
+            this.UpdateDisplay();
+        }
+
+        private void FlexibowlExecute_Light()
+        {
+            try
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    LogToFile("Light Command");
+                });
+            }
+            catch (Exception ex)
+            {
+                OnReportError(ex);
+            }
+            this.UpdateDisplay();
+        }
+
+        private void FlexibowlExecute_Empty()
+        {
+            try
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    LogToFile("Empty Command");
+                });
+            }
+            catch (Exception ex)
+            {
+                OnReportError(ex);
+            }
+            this.UpdateDisplay();
+        }
+
+        private void FlexibowlExecute_Reset()
+        {
+            try
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    LogToFile("Reset Command");
+                });
+            }
+            catch (Exception ex)
+            {
+                OnReportError(ex);
+            }
+            this.UpdateDisplay();
+        }
+        #endregion
+
+
+        /// <summary>
+        /// Refresh the complete view
+        /// </summary>
         private void UpdateDisplay()
         {
             var dispatcher = System.Windows.Application.Current.Dispatcher;
@@ -1077,6 +1279,16 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     this.OnPropertyChanged("ConnectionButtonText");
                     this.ConnectionCommand.RaiseCanExecuteChanged();
 
+                    this.FlexibowlCommand_MoveFlip.RaiseCanExecuteChanged();
+                    this.FlexibowlCommand_Move.RaiseCanExecuteChanged();
+                    this.FlexibowlCommand_Flip.RaiseCanExecuteChanged();
+                    this.FlexibowlCommand_MoveBlow.RaiseCanExecuteChanged();
+                    this.FlexibowlCommand_Blow.RaiseCanExecuteChanged();
+                    this.FlexibowlCommand_MoveBlowFlip.RaiseCanExecuteChanged();
+                    this.FlexibowlCommand_Shake.RaiseCanExecuteChanged();
+                    this.FlexibowlCommand_Light.RaiseCanExecuteChanged();
+                    this.FlexibowlCommand_Empty.RaiseCanExecuteChanged();
+                    this.FlexibowlCommand_Reset.RaiseCanExecuteChanged();
 
                     this.OnPropertyChanged("FlexiBowlBackLight");
                     this.OnPropertyChanged("MoveFlipAngle");
@@ -1224,6 +1436,9 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             return;
         }
 
+        /// <summary>
+        /// Zero all fields releated to V+ variables
+        /// </summary>
         private void ZeroAllVPlusValues()
         {
 
@@ -1269,6 +1484,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
 
             return;
         }
+
         /// <summary>
         /// Set FlexiBowl default parameter values into the V+ Doubles
         /// </summary>
@@ -1473,7 +1689,6 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                 return;
             }
         }
-
 
         /// <summary>
         /// Create new recipe "Recipe 1", rename it to "New FlexiBowl Recipe" and select as active.

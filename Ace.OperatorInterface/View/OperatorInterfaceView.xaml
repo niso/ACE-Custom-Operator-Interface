@@ -87,7 +87,7 @@
                                                 <Label   Grid.Column ="5" Grid.Row="1" Content="Count" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                                                 <TextBox Grid.Column ="5" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveFlipCount}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
 
-                                                <Button  Grid.Column ="6" Grid.Row="1" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexiBowlCommand}" CommandParameter="MoveFlip" />
+                                                <Button  Grid.Column ="6" Grid.Row="1" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexibowlCommand_MoveFlip}" />
                                             </Grid>
                                         </GroupBox>
 
@@ -103,8 +103,8 @@
                                                 </Grid.RowDefinitions>
                                                 <Label   Grid.Column ="0" Grid.Row="0" Content="" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"  Grid.ColumnSpan="4" FontWeight="Normal"/>
                                                 <Label   Grid.Column ="0" Grid.Row="1" Content="" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                                                <Button  Grid.Column ="0" Grid.Row="0" Grid.RowSpan="2" Content="{Binding FlexiBowlBackLightButtonText}" FontSize="9" Margin="2" />
-                                                <Button  Grid.Column ="0" Grid.Row="2" Content="Reset" FontSize="9" Margin="2"/>
+                                                <Button  Grid.Column ="0" Grid.Row="0" Grid.RowSpan="2" Content="{Binding FlexiBowlBackLightButtonText}" FontSize="9" Margin="2" Command="{Binding FlexibowlCommand_Light}" />
+                                                <Button  Grid.Column ="0" Grid.Row="2" Content="Reset" FontSize="9" Margin="2" Command="{Binding FlexibowlCommand_Reset}"/>
                                             </Grid>
                                         </GroupBox>
                                         
@@ -132,7 +132,7 @@
                                                 <Label   Grid.Column ="3" Grid.Row="1" Content="Speed" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                                                 <TextBox Grid.Column ="3" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveSpeed}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
 
-                                                <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexiBowlCommand}" CommandParameter="Move" />
+                                                <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexibowlCommand_Move}"/>
                                             </Grid>
                                           </GroupBox> 
                                         
@@ -155,7 +155,7 @@
                                                 <Label   Grid.Column ="1" Grid.Row="1" Content="Count" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                                                 <TextBox Grid.Column ="1" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding FlipCount}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                                                 
-                                                <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexiBowlCommand}" CommandParameter="Flip" />
+                                                <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexibowlCommand_Flip}" />
                                             </Grid>
                                           </GroupBox>
                                         
@@ -187,7 +187,7 @@
                                                 <Label   Grid.Column ="4" Grid.Row="1" Content="Time" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                                                 <TextBox Grid.Column ="4" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding MoveBlowTime}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
 
-                                                <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexiBowlCommand}" CommandParameter="MoveBlow" />
+                                                <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexibowlCommand_MoveBlow}"/>
                                             </Grid>
                                           </GroupBox>
                                         
@@ -206,7 +206,7 @@
                                                 <Label   Grid.Column ="0" Grid.Row="1" Content="Time" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                                                 <TextBox Grid.Column ="0" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding BlowTime}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
 
-                                                <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexiBowlCommand}" CommandParameter="Blow" />
+                                                <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexibowlCommand_Blow}"/>
                                             </Grid>
                                           </GroupBox>                                        
                                         
@@ -245,7 +245,7 @@
                                                 <Label   Grid.Column ="6" Grid.Row="1" Content="Time" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                                                 <TextBox Grid.Column ="6" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center"  Text="{Binding MoveBlowFlipTime}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
 
-                                                <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexiBowlCommand}" CommandParameter="MoveBlowFlip" />
+                                                <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexibowlCommand_MoveBlowFlip}"/>
                                             </Grid>
                                           </GroupBox>
  
@@ -279,7 +279,7 @@
                                                 <Label   Grid.Column ="5" Grid.Row="1" Content="Count" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                                                 <TextBox Grid.Column ="5" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding ShakeCount}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
 
-                                                <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexiBowlCommand}" CommandParameter="Shake" />
+                                                <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexibowlCommand_Shake}"/>
                                             </Grid>
                                           </GroupBox>
                                         
@@ -293,7 +293,7 @@
                                                     <RowDefinition Height="*"/>
                                                     <RowDefinition Height="*"/>
                                                 </Grid.RowDefinitions>
-                                                <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="ON" FontSize="9" Margin="1" Command="{Binding FlexiBowlCommand}" CommandParameter="Light" />
+                                                <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="ON" FontSize="9" Margin="1" Command="{Binding FlexibowlCommand_Empty}"/>
                                             </Grid>
                                         </GroupBox>
                                     </Grid>
