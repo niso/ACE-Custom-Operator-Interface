@@ -25,8 +25,7 @@ namespace Ace.OperatorInterface
         /// Initializes a new instance of the <see cref="DelegateCommand"/> class.
         /// </summary>
         /// <param name="execute">The execute.</param>
-        public DelegateCommand(Action execute)
-                       : this((arg) => execute.Invoke(), null)
+        public DelegateCommand(Action execute) : this((arg) => execute.Invoke(), null)
         {
         }
 
@@ -34,8 +33,7 @@ namespace Ace.OperatorInterface
         /// Initializes a new instance of the <see cref="DelegateCommand"/> class.
         /// </summary>
         /// <param name="execute">The execute.</param>
-        public DelegateCommand(Action<object> execute)
-                       : this(execute, null)
+        public DelegateCommand(Action<object> execute) : this(execute, null)
         {
         }
 
@@ -44,8 +42,7 @@ namespace Ace.OperatorInterface
         /// </summary>
         /// <param name="execute">The execute.</param>
         /// <param name="canExecute">The can execute.</param>
-        public DelegateCommand(Action execute,
-                       Func<bool> canExecute) :
+        public DelegateCommand(Action execute, Func<bool> canExecute) :
             this((arg) => execute.Invoke(), (arg) => canExecute.Invoke())
         {
         }
@@ -55,8 +52,7 @@ namespace Ace.OperatorInterface
         /// </summary>
         /// <param name="execute">The execute.</param>
         /// <param name="canExecute">The can execute.</param>
-        public DelegateCommand(Action<object> execute,
-                       Predicate<object> canExecute)
+        public DelegateCommand(Action<object> execute, Predicate<object> canExecute)
         {
             _execute = execute;
             _canExecute = canExecute;

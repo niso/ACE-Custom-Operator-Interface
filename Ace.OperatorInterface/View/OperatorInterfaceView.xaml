@@ -51,9 +51,9 @@
                                             <RowDefinition Height="16.67*"/>
                                         </Grid.RowDefinitions>
 
-                                        <Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding ConnectionCommand}" Height="16" Margin="14,12,2,2">
+                                        <!--<Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding ConnectionCommand}" Height="16" Margin="14,12,2,2">
                                             <TextBlock Text="{Binding ConnectionButtonText}" Style="{DynamicResource AceDefaultTextBlockStyle}" Margin="2,4,2,4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Button>
+                                        </Button>-->
 
                                         <GroupBox Header="Move-Flip" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="7"  Margin="2" FontSize="10" FontWeight="Bold" >
                                             <Grid>
@@ -245,7 +245,7 @@
                                                 <Label   Grid.Column ="6" Grid.Row="1" Content="Time" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                                                 <TextBox Grid.Column ="6" Grid.Row="2" Margin="2" FontSize="9" VerticalAlignment="Center" TextAlignment="Center"  Text="{Binding MoveBlowFlipTime}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
 
-                                                <Button  Grid.Column ="6" Grid.Row="0" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexibowlCommand_MoveBlowFlip}"/>
+                                                <Button  Grid.Column ="7" Grid.Row="0" Grid.RowSpan="3" Content="Execute" FontSize="9" Margin="1" Command="{Binding FlexibowlCommand_MoveBlowFlip}"/>
                                             </Grid>
                                           </GroupBox>
  

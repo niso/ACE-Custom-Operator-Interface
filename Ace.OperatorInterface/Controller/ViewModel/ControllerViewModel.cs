@@ -21,6 +21,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
     /// </summary>
     public class ControllerViewModel : ItemViewModel
     {
+
         #region Fields
 
         public ILogService logService;
@@ -69,7 +70,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         private double _shakeSpeed = 0;
         private double _shakeCount = 0;
 
-        #endregion
+        #endregion Fields
 
 
         #region Properties
@@ -157,8 +158,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         public string SelectedPropertyName { get; set; }
 
 
-        #region FlexiBowl Properties
-
+        #region FlexiBowl Parameter Properties
 
         /// <summary>
         /// BackLight Setting
@@ -168,27 +168,36 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _flexiBowlBackLight; }
             set
             {
-                if ((_flexiBowlBackLight != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
+                    if (_flexiBowlBackLight != value)
+                    {
 
-                    bool success = false;
-                    double old = _flexiBowlBackLight;
+                        bool success = false;
+                        double old = _flexiBowlBackLight;
 
-                    SetVPlusValue("fbl.backlight", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.backlight", old, value, out success);
+                        if (!success)
+                            return;
 
 
-                    UpdateRecipeManager("fbl.backlight", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.backlight", old, ref value, out success);
+                        if (!success)
+                            return;
 
                     
-                    _flexiBowlBackLight = value;
-                    this.OnPropertyChanged(nameof(FlexiBowlBackLight));
-                    //this.UpdateDisplay();                   
+                        _flexiBowlBackLight = value;
+                        this.OnPropertyChanged(nameof(FlexiBowlBackLight));
+                    }
                 }
-
+                else
+                {
+                    if (_flexiBowlBackLight != value)
+                    {
+                        _flexiBowlBackLight = value;
+                        this.OnPropertyChanged(nameof(FlexiBowlBackLight));
+                    }
+                }
             }
         }
 
@@ -200,49 +209,69 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveFlipAngle; }
             set
             {
-                if ((_moveFlipAngle != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
+                    if (_moveFlipAngle != value)
+                    {
+                        bool success = false;
+                        double old = _moveFlipAngle;
 
-                    bool success = false;
-                    double old = _moveFlipAngle;
+                        UpdateRecipeManager("fbl.mf.angle", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    UpdateRecipeManager("fbl.mf.angle", old, ref value, out success);
-                    if (!success)
-                        return;
-                    
 
-                    SetVPlusValue("fbl.mf.angle", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.mf.angle", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveFlipAngle = value;
-                    this.OnPropertyChanged(nameof(MoveFlipAngle));
-                    //this.UpdateDisplay();
+                        _moveFlipAngle = value;
+                        this.OnPropertyChanged(nameof(MoveFlipAngle));
+                    }
+                }
+                else
+                {
+                    if (_moveFlipAngle != value)
+                    {
+                        _moveFlipAngle = value;
+                        this.OnPropertyChanged(nameof(MoveFlipAngle));
+                    }
                 }
             }
         }
+
         public double MoveFlipAcc
         {
             get { return _moveFlipAcc; }
             set
             {
-                if ((_moveFlipAcc != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
+                    if (_moveFlipAcc != value)
+                    {
 
-                    bool success = false;
-                    double old = _moveFlipAcc;
+                        bool success = false;
+                        double old = _moveFlipAcc;
              
-                    UpdateRecipeManager("fbl.mf.acc", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.mf.acc", old, ref value, out success);
+                        if (!success)
+                            return;
         
-                    SetVPlusValue("fbl.mf.acc", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.mf.acc", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveFlipAcc = value;
-                    this.OnPropertyChanged(nameof(MoveFlipAcc));
-                    //this.UpdateDisplay();
+                        _moveFlipAcc = value;
+                        this.OnPropertyChanged(nameof(MoveFlipAcc));
+                    }
+                }
+                else
+                {
+                    if (_moveFlipAcc != value)
+                    {
+                        _moveFlipAcc = value;
+                        this.OnPropertyChanged(nameof(MoveFlipAcc));
+                    }
                 }
             }
         }
@@ -251,22 +280,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveFlipDec; }
             set
             {
-                if ((_moveFlipDec != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _moveFlipDec;
+                    if (_moveFlipDec != value)
+                    {
+                        bool success = false;
+                        double old = _moveFlipDec;
 
-                    UpdateRecipeManager("fbl.mf.dec", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.mf.dec", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.mf.dec", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.mf.dec", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveFlipDec = value;
-                    this.OnPropertyChanged(nameof(MoveFlipDec));
-                    // this.UpdateDisplay();
+                        _moveFlipDec = value;
+                        this.OnPropertyChanged(nameof(MoveFlipDec));
+                    }
+                }
+                else
+                {
+                    if (_moveFlipDec != value)
+                    {
+                        _moveFlipDec = value;
+                        this.OnPropertyChanged(nameof(MoveFlipDec));
+                    }
                 }
             }
         }
@@ -275,22 +314,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveFlipSpeed; }
             set
             {
-                if ((_moveFlipSpeed != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _moveFlipSpeed;
+                    if (_moveFlipSpeed != value)
+                    {
+                        bool success = false;
+                        double old = _moveFlipSpeed;
 
-                    UpdateRecipeManager("fbl.mf.speed", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.mf.speed", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.mf.speed", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.mf.speed", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveFlipSpeed = value;
-                    this.OnPropertyChanged(nameof(MoveFlipSpeed));
-                    //this.UpdateDisplay();
+                        _moveFlipSpeed = value;
+                        this.OnPropertyChanged(nameof(MoveFlipSpeed));
+                    }
+                }
+                else
+                {
+                    if (_moveFlipSpeed != value)
+                    {
+                        _moveFlipSpeed = value;
+                        this.OnPropertyChanged(nameof(MoveFlipSpeed));
+                    }
                 }
             }
         }
@@ -299,22 +348,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveFlipDelay; }
             set
             {
-                if ((_moveFlipDelay != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _moveFlipDelay;
+                    if (_moveFlipDelay != value)
+                    {
+                        bool success = false;
+                        double old = _moveFlipDelay;
 
-                    UpdateRecipeManager("fbl.mf.delay", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.mf.delay", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.mf.delay", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.mf.delay", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveFlipDelay = value;
-                    this.OnPropertyChanged(nameof(MoveFlipDelay));
-                    // this.UpdateDisplay();
+                        _moveFlipDelay = value;
+                        this.OnPropertyChanged(nameof(MoveFlipDelay));
+                    }
+                }
+                else
+                {
+                    if (_moveFlipDelay != value)
+                    {
+                        _moveFlipDelay = value;
+                        this.OnPropertyChanged(nameof(MoveFlipDelay));
+                    }
                 }
             }
         }
@@ -323,22 +382,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveFlipCount; }
             set
             {
-                if ((_moveFlipCount != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _moveFlipCount;
+                    if (_moveFlipCount != value)
+                    {
+                        bool success = false;
+                        double old = _moveFlipCount;
 
-                    UpdateRecipeManager("fbl.mf.count", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.mf.count", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.mf.count", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.mf.count", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveFlipCount = value;
-                    this.OnPropertyChanged(nameof(MoveFlipCount));
-                    // this.UpdateDisplay();
+                        _moveFlipCount = value;
+                        this.OnPropertyChanged(nameof(MoveFlipCount));
+                    }
+                }
+                else
+                {
+                    if (_moveFlipCount != value)
+                    {
+                        _moveFlipCount = value;
+                        this.OnPropertyChanged(nameof(MoveFlipCount));
+                    }
                 }
             }
         }
@@ -351,22 +420,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveAngle; }
             set
             {
-                if ((value != _moveAngle) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _moveAngle;
+                    if (value != _moveAngle)
+                    {
+                        bool success = false;
+                        double old = _moveAngle;
 
-                    UpdateRecipeManager("fbl.m.angle", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.m.angle", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.m.angle", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.m.angle", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveAngle = value;
-                    this.OnPropertyChanged(nameof(MoveAngle));
-                    // this.UpdateDisplay();
+                        _moveAngle = value;
+                        this.OnPropertyChanged(nameof(MoveAngle));
+                    }
+                }
+                else
+                {
+                    if (_moveAngle != value)
+                    {
+                        _moveAngle = value;
+                        this.OnPropertyChanged(nameof(MoveAngle));
+                    }
                 }
             }
         }
@@ -375,22 +454,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveAcc; }
             set
             {
-                if ((_moveAcc != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _moveAcc;
+                    if (_moveAcc != value) 
+                    {
+                        bool success = false;
+                        double old = _moveAcc;
 
-                    UpdateRecipeManager("fbl.m.acc", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.m.acc", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.m.acc", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.m.acc", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveAcc = value;
-                    this.OnPropertyChanged(nameof(MoveAcc));
-                    // this.UpdateDisplay();
+                        _moveAcc = value;
+                        this.OnPropertyChanged(nameof(MoveAcc));
+                    }
+                }
+                else
+                {
+                    if (_moveAcc != value)
+                    {
+                        _moveAcc = value;
+                        this.OnPropertyChanged(nameof(MoveAcc));
+                    }
                 }
             }
         }
@@ -399,22 +488,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveDec; }
             set
             {
-                if ((_moveDec != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _moveDec;
+                    if (_moveDec != value)
+                    {
+                        bool success = false;
+                        double old = _moveDec;
 
-                    UpdateRecipeManager("fbl.m.dec", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.m.dec", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.m.dec", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.m.dec", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveDec = value;
-                    this.OnPropertyChanged(nameof(MoveDec));
-                    // this.UpdateDisplay();
+                        _moveDec = value;
+                        this.OnPropertyChanged(nameof(MoveDec));
+                    }
+                }
+                else
+                {
+                    if (_moveDec != value)
+                    {
+                        _moveDec = value;
+                        this.OnPropertyChanged(nameof(MoveDec));
+                    }
                 }
             }
         }
@@ -423,22 +522,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveSpeed; }
             set
             {
-                if ((value != _moveSpeed) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _moveSpeed;
+                    if (value != _moveSpeed)
+                    {
+                        bool success = false;
+                        double old = _moveSpeed;
 
-                    UpdateRecipeManager("fbl.m.speed", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.m.speed", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.m.speed", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.m.speed", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveSpeed = value;
-                    this.OnPropertyChanged(nameof(MoveSpeed));
-                    // this.UpdateDisplay();
+                        _moveSpeed = value;
+                        this.OnPropertyChanged(nameof(MoveSpeed));
+                    }
+                }
+                else
+                {
+                    if (_moveSpeed != value)
+                    {
+                        _moveSpeed = value;
+                        this.OnPropertyChanged(nameof(MoveSpeed));
+                    }
                 }
             }
         }
@@ -451,22 +560,33 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _flipDelay; }
             set
             {
-                if ((_flipDelay != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
+                {                     
+                    if (_flipDelay != value)
+                    {
+                        bool success = false;
+                        double old = _flipDelay;
+
+                        UpdateRecipeManager("fbl.f.delay", old, ref value, out success);
+                        if (!success)
+                            return;
+
+                        SetVPlusValue("fbl.f.delay", old, value, out success);
+                        if (!success)
+                            return;
+
+                        _flipDelay = value;
+                        this.OnPropertyChanged(nameof(FlipDelay));
+                        //this.UpdateDisplay();
+                    }
+                }
+                else
                 {
-                    bool success = false;
-                    double old = _flipDelay;
-
-                    UpdateRecipeManager("fbl.f.delay", old, ref value, out success);
-                    if (!success)
-                        return;
-
-                    SetVPlusValue("fbl.f.delay", old, value, out success);
-                    if (!success)
-                        return;
-
-                    _flipDelay = value;
-                    this.OnPropertyChanged(nameof(FlipDelay));
-                    //this.UpdateDisplay();
+                    if (_flipDelay != value)
+                    {
+                        _flipDelay = value;
+                        this.OnPropertyChanged(nameof(FlipDelay));
+                    }
                 }
             }
         }
@@ -475,22 +595,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _flipCount; }
             set
             {
-                if ((_flipCount != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _flipCount;
+                    if (_flipCount != value)
+                    {
+                        bool success = false;
+                        double old = _flipCount;
 
-                    UpdateRecipeManager("fbl.f.count", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.f.count", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.f.count", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.f.count", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _flipCount = value;
-                    this.OnPropertyChanged(nameof(FlipCount));
-                    // this.UpdateDisplay();
+                        _flipCount = value;
+                        this.OnPropertyChanged(nameof(FlipCount));
+                    }
+                }
+                else
+                {
+                    if (_flipCount != value)
+                    {
+                        _flipCount = value;
+                        this.OnPropertyChanged(nameof(FlipCount));
+                    }
                 }
             }
         }
@@ -503,22 +633,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveBlowAngle; }
             set
             {
-                if ((_moveBlowAngle != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _moveBlowAngle;
+                    if (_moveBlowAngle != value)
+                    {
+                        bool success = false;
+                        double old = _moveBlowAngle;
 
-                    UpdateRecipeManager("fbl.mb.angle", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.mb.angle", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.mb.angle", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.mb.angle", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveBlowAngle = value;
-                    this.OnPropertyChanged(nameof(MoveBlowAngle));
-                    // this.UpdateDisplay();
+                        _moveBlowAngle = value;
+                        this.OnPropertyChanged(nameof(MoveBlowAngle));
+                    }
+                }
+                else
+                {
+                    if (_moveBlowAngle != value)
+                    {
+                        _moveBlowAngle = value;
+                        this.OnPropertyChanged(nameof(MoveBlowAngle));
+                    }
                 }
             }
         }
@@ -527,23 +667,33 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveBlowAcc; }
             set
             {
-                if ((_moveBlowAcc != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _moveBlowAcc;
+                    if (_moveBlowAcc != value)
+                    {
+                        bool success = false;
+                        double old = _moveBlowAcc;
 
-                    UpdateRecipeManager("fbl.mb.acc", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.mb.acc", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.mb.acc", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.mb.acc", old, value, out success);
+                        if (!success)
+                            return;
 
 
-                    _moveBlowAcc = value;
-                    this.OnPropertyChanged(nameof(MoveBlowAcc));
-                    // this.UpdateDisplay();
+                        _moveBlowAcc = value;
+                        this.OnPropertyChanged(nameof(MoveBlowAcc));
+                    }
+                }
+                else
+                {
+                    if (_moveBlowAcc != value)
+                    {
+                        _moveBlowAcc = value;
+                        this.OnPropertyChanged(nameof(MoveBlowAcc));
+                    }
                 }
             }
         }
@@ -552,22 +702,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveBlowDec; }
             set
             {
-                if ((_moveBlowDec != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _moveBlowDec;
+                    if (_moveBlowDec != value)
+                    {
+                        bool success = false;
+                        double old = _moveBlowDec;
 
-                    UpdateRecipeManager("fbl.mb.dec", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.mb.dec", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.mb.dec", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.mb.dec", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveBlowDec = value;
-                    this.OnPropertyChanged(nameof(MoveBlowDec));
-                    // this.UpdateDisplay();
+                        _moveBlowDec = value;
+                        this.OnPropertyChanged(nameof(MoveBlowDec));
+                    }
+                }
+                else
+                {
+                    if (_moveBlowDec != value)
+                    {
+                        _moveBlowDec = value;
+                        this.OnPropertyChanged(nameof(MoveBlowDec));
+                    }
                 }
             }
         }
@@ -576,22 +736,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveBlowSpeed; }
             set
             {
-                if ((_moveBlowSpeed != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _moveBlowSpeed;
+                    if (_moveBlowSpeed != value)
+                    {
+                        bool success = false;
+                        double old = _moveBlowSpeed;
 
-                    UpdateRecipeManager("fbl.mb.speed", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.mb.speed", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.mb.speed", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.mb.speed", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveBlowSpeed = value;
-                    this.OnPropertyChanged(nameof(MoveBlowSpeed));
-                    // this.UpdateDisplay();
+                        _moveBlowSpeed = value;
+                        this.OnPropertyChanged(nameof(MoveBlowSpeed));
+                    }
+                }
+                else
+                {
+                    if (_moveBlowSpeed != value)
+                    {
+                        _moveBlowSpeed = value;
+                        this.OnPropertyChanged(nameof(MoveBlowSpeed));
+                    }
                 }
             }
         }
@@ -600,22 +770,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveBlowTime; }
             set
             {
-                if ((_moveBlowTime != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _moveBlowTime;
+                    if (_moveBlowTime != value)
+                    {
+                        bool success = false;
+                        double old = _moveBlowTime;
 
-                    UpdateRecipeManager("fbl.mb.time", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.mb.time", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.mb.time", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.mb.time", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveBlowTime = value;
-                    this.OnPropertyChanged(nameof(MoveBlowTime));
-                    // this.UpdateDisplay();
+                        _moveBlowTime = value;
+                        this.OnPropertyChanged(nameof(MoveBlowTime));
+                    }
+                }
+                else
+                {
+                    if (_moveBlowTime != value)
+                    {
+                        _moveBlowTime = value;
+                        this.OnPropertyChanged(nameof(MoveBlowTime));
+                    }
                 }
             }
         }
@@ -628,22 +808,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _blowTime; }
             set
             {
-                if ((_blowTime != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _blowTime;
+                    if (_blowTime != value) 
+                    {
+                        bool success = false;
+                        double old = _blowTime;
 
-                    UpdateRecipeManager("fbl.b.time", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.b.time", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.b.time", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.b.time", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _blowTime = value;
-                    this.OnPropertyChanged(nameof(BlowTime));
-                    // this.UpdateDisplay();
+                        _blowTime = value;
+                        this.OnPropertyChanged(nameof(BlowTime));
+                    }
+                }
+                else
+                {
+                    if (_blowTime != value)
+                    {
+                        _blowTime = value;
+                        this.OnPropertyChanged(nameof(BlowTime));
+                    }
                 }
             }
         }
@@ -656,23 +846,35 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveBlowFlipAngle; }
             set
             {
-                if ((_moveBlowFlipAngle != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _moveBlowFlipAngle;
+                    if (_moveBlowFlipAngle != value)
+                    {
+                        bool success = false;
+                        double old = _moveBlowFlipAngle;
 
-                    UpdateRecipeManager("fbl.mbf.angle", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.mbf.angle", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.mbf.angle", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.mbf.angle", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveBlowFlipAngle = value;
-                    this.OnPropertyChanged(nameof(MoveBlowFlipAngle));
-                    this.UpdateDisplay();
+                        _moveBlowFlipAngle = value;
+                        this.OnPropertyChanged(nameof(MoveBlowFlipAngle));
+                        this.UpdateDisplay();
+                    }
                 }
+                else
+                {
+                    if (_moveBlowFlipAngle != value)
+                    {
+                        _moveBlowFlipAngle = value;
+                        this.OnPropertyChanged(nameof(MoveBlowFlipAngle));
+                    }
+                }
+
             }
         }
         public double MoveBlowFlipAcc
@@ -680,22 +882,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveBlowFlipAcc; }
             set
             {
-                if ((_moveBlowFlipAcc != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _moveBlowFlipAcc;
+                    if (_moveBlowFlipAcc != value)
+                    {
+                        bool success = false;
+                        double old = _moveBlowFlipAcc;
 
-                    UpdateRecipeManager("fbl.mbf.acc", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.mbf.acc", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.mbf.acc", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.mbf.acc", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveBlowFlipAcc = value;
-                    this.OnPropertyChanged(nameof(MoveBlowFlipAcc));
-                    // this.UpdateDisplay();
+                        _moveBlowFlipAcc = value;
+                        this.OnPropertyChanged(nameof(MoveBlowFlipAcc));
+                    }
+                }
+                else
+                {
+                    if (_moveBlowFlipAcc != value)
+                    {
+                        _moveBlowFlipAcc = value;
+                        this.OnPropertyChanged(nameof(MoveBlowFlipAcc));
+                    }
                 }
             }
         }
@@ -704,22 +916,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveBlowFlipDec; }
             set
             {
-                if ((_moveBlowFlipDec != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _moveBlowFlipDec;
+                    if (_moveBlowFlipDec != value)
+                    {
+                        bool success = false;
+                        double old = _moveBlowFlipDec;
 
-                    UpdateRecipeManager("fbl.mbf.dec", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.mbf.dec", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.mbf.dec", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.mbf.dec", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveBlowFlipDec = value;
-                    this.OnPropertyChanged(nameof(MoveBlowFlipDec));
-                    // this.UpdateDisplay();
+                        _moveBlowFlipDec = value;
+                        this.OnPropertyChanged(nameof(MoveBlowFlipDec));
+                    }
+                }
+                else
+                {
+                    if (_moveBlowFlipDec != value)
+                    {
+                        _moveBlowFlipDec = value;
+                        this.OnPropertyChanged(nameof(MoveBlowFlipDec));
+                    }
                 }
             }
         }
@@ -728,22 +950,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveBlowFlipSpeed; }
             set
             {
-                if ((_moveBlowFlipSpeed != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _moveBlowFlipSpeed;
+                    if (_moveBlowFlipSpeed != value)
+                    {
+                        bool success = false;
+                        double old = _moveBlowFlipSpeed;
 
-                    UpdateRecipeManager("fbl.mbf.speed", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.mbf.speed", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.mbf.speed", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.mbf.speed", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveBlowFlipSpeed = value;
-                    this.OnPropertyChanged(nameof(MoveBlowFlipSpeed));
-                    // this.UpdateDisplay();
+                        _moveBlowFlipSpeed = value;
+                        this.OnPropertyChanged(nameof(MoveBlowFlipSpeed));
+                    }
+                }
+                else
+                {
+                    if (_moveBlowFlipSpeed != value)
+                    {
+                        _moveBlowFlipSpeed = value;
+                        this.OnPropertyChanged(nameof(MoveBlowFlipSpeed));
+                    }
                 }
             }
         }
@@ -752,22 +984,33 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveBlowFlipDelay; }
             set
             {
-                if ((_moveBlowFlipDelay != value) && (Controller.IsAlive))
+                if(Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _moveBlowFlipDelay;
+                    if ((_moveBlowFlipDelay != value) && (Controller.IsAlive))
+                    {
+                        bool success = false;
+                        double old = _moveBlowFlipDelay;
 
-                    UpdateRecipeManager("fbl.mbf.delay", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.mbf.delay", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.mbf.delay", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.mbf.delay", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveBlowFlipDelay = value;
-                    this.OnPropertyChanged(nameof(MoveBlowFlipDelay));
-                    this.UpdateDisplay();
+                        _moveBlowFlipDelay = value;
+                        this.OnPropertyChanged(nameof(MoveBlowFlipDelay));
+                        this.UpdateDisplay();
+                    }
+                }
+                else
+                {
+                    if (_moveBlowFlipDelay != value)
+                    {
+                        _moveBlowFlipDelay = value;
+                        this.OnPropertyChanged(nameof(MoveBlowFlipDelay));
+                    }
                 }
             }
         }
@@ -776,22 +1019,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveBlowFlipCount; }
             set
             {
-                if ((_moveBlowFlipCount != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _moveBlowFlipCount;
+                    if (_moveBlowFlipCount != value)
+                    {
+                        bool success = false;
+                        double old = _moveBlowFlipCount;
 
-                    UpdateRecipeManager("fbl.mbf.count", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.mbf.count", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.mbf.count", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.mbf.count", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveBlowFlipCount = value;
-                    this.OnPropertyChanged(nameof(MoveBlowFlipCount));
-                    // this.UpdateDisplay();
+                        _moveBlowFlipCount = value;
+                        this.OnPropertyChanged(nameof(MoveBlowFlipCount));
+                    }
+                }
+                else
+                {
+                    if (_moveBlowFlipCount != value)
+                    {
+                        _moveBlowFlipCount = value;
+                        this.OnPropertyChanged(nameof(MoveBlowFlipCount));
+                    }
                 }
             }
         }
@@ -800,22 +1053,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _moveBlowFlipTime; }
             set
             {
-                if ((_moveBlowFlipTime != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _moveBlowFlipTime;
+                    if (_moveBlowFlipTime != value) 
+                    {
+                        bool success = false;
+                        double old = _moveBlowFlipTime;
 
-                    UpdateRecipeManager("fbl.mbf.time", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.mbf.time", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.mbf.time", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.mbf.time", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _moveBlowFlipTime = value;
-                    this.OnPropertyChanged(nameof(MoveBlowFlipTime));
-                    // this.UpdateDisplay();
+                        _moveBlowFlipTime = value;
+                        this.OnPropertyChanged(nameof(MoveBlowFlipTime));
+                    }
+                }
+                else
+                {
+                    if (_moveBlowFlipTime != value)
+                    {
+                        _moveBlowFlipTime = value;
+                        this.OnPropertyChanged(nameof(MoveBlowFlipTime));
+                    }
                 }
             }
         }
@@ -828,22 +1091,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _shakeCWAngle; }
             set
             {
-                if ((_shakeCWAngle != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _shakeCWAngle;
+                    if (_shakeCWAngle != value)
+                    {
+                        bool success = false;
+                        double old = _shakeCWAngle;
 
-                    UpdateRecipeManager("fbl.sh.cw", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.sh.cw", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.sh.cw", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.sh.cw", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _shakeCWAngle = value;
-                    this.OnPropertyChanged(nameof(ShakeCWAngle));
-                    // this.UpdateDisplay();
+                        _shakeCWAngle = value;
+                        this.OnPropertyChanged(nameof(ShakeCWAngle));
+                    }
+                }
+                else
+                {
+                    if (_shakeCWAngle != value)
+                    {
+                        _shakeCWAngle = value;
+                        this.OnPropertyChanged(nameof(ShakeCWAngle));
+                    }
                 }
             }
         }
@@ -852,22 +1125,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _shakeCCWAngle; }
             set
             {
-                if ((_shakeCCWAngle != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _shakeCCWAngle;
+                    if (_shakeCCWAngle != value) 
+                    {
+                        bool success = false;
+                        double old = _shakeCCWAngle;
 
-                    UpdateRecipeManager("fbl.sh.ccw", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.sh.ccw", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.sh.ccw", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.sh.ccw", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _shakeCCWAngle = value;
-                    this.OnPropertyChanged(nameof(ShakeCCWAngle));
-                    // this.UpdateDisplay();
+                        _shakeCCWAngle = value;
+                        this.OnPropertyChanged(nameof(ShakeCCWAngle));
+                    }
+                }
+                else
+                {
+                    if (_shakeCCWAngle != value)
+                    {
+                        _shakeCCWAngle = value;
+                        this.OnPropertyChanged(nameof(ShakeCCWAngle));
+                    }
                 }
             }
         }
@@ -876,22 +1159,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _shakeAcc; }
             set
             {
-                if ((_shakeAcc != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _shakeAcc;
+                    if (_shakeAcc != value)
+                    {
+                        bool success = false;
+                        double old = _shakeAcc;
 
-                    UpdateRecipeManager("fbl.sh.acc", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.sh.acc", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.sh.acc", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.sh.acc", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _shakeAcc = value;
-                    this.OnPropertyChanged(nameof(ShakeAcc));
-                    // this.UpdateDisplay();
+                        _shakeAcc = value;
+                        this.OnPropertyChanged(nameof(ShakeAcc));
+                    }
+                }
+                else
+                {
+                    if (_shakeAcc != value)
+                    {
+                        _shakeAcc = value;
+                        this.OnPropertyChanged(nameof(ShakeAcc));
+                    }
                 }
             }
         }
@@ -900,22 +1193,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _shakeDec; }
             set
             {
-                if ((_shakeDec != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _shakeDec;
+                    if (_shakeDec != value)
+                    {
+                        bool success = false;
+                        double old = _shakeDec;
 
-                   UpdateRecipeManager("fbl.sh.dec", old, ref value, out success);
-                    if (!success)
-                        return;
+                       UpdateRecipeManager("fbl.sh.dec", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                   SetVPlusValue("fbl.sh.dec", old, value, out success);
-                    if (!success)
-                        return;
+                       SetVPlusValue("fbl.sh.dec", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _shakeDec = value;
-                    this.OnPropertyChanged(nameof(ShakeDec));
-                    // this.UpdateDisplay();
+                        _shakeDec = value;
+                        this.OnPropertyChanged(nameof(ShakeDec));
+                    }
+                }
+                else
+                {
+                    if (_shakeDec != value)
+                    {
+                        _shakeDec = value;
+                        this.OnPropertyChanged(nameof(ShakeDec));
+                    }
                 }
             }
         }
@@ -924,22 +1227,32 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _shakeSpeed; }
             set
             {
-                if ((_shakeSpeed != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _shakeSpeed;
+                    if (_shakeSpeed != value) 
+                    {
+                        bool success = false;
+                        double old = _shakeSpeed;
 
-                    UpdateRecipeManager("fbl.sh.speed", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.sh.speed", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.sh.speed", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.sh.speed", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _shakeSpeed = value;
-                    this.OnPropertyChanged(nameof(ShakeSpeed));
-                    // this.UpdateDisplay();
+                        _shakeSpeed = value;
+                        this.OnPropertyChanged(nameof(ShakeSpeed));
+                    }
+                }
+                else
+                {
+                    if (_shakeSpeed != value)
+                    {
+                        _shakeSpeed = value;
+                        this.OnPropertyChanged(nameof(ShakeSpeed));
+                    }
                 }
             }
         }
@@ -948,32 +1261,40 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get { return _shakeCount; }
             set
             {
-                if ((_shakeCount != value) && (Controller.IsAlive))
+                if (Controller.IsAlive)
                 {
-                    bool success = false;
-                    double old = _shakeCount;
+                    if (_shakeCount != value)
+                    {
+                        bool success = false;
+                        double old = _shakeCount;
 
-                    UpdateRecipeManager("fbl.sh.count", old, ref value, out success);
-                    if (!success)
-                        return;
+                        UpdateRecipeManager("fbl.sh.count", old, ref value, out success);
+                        if (!success)
+                            return;
 
-                    SetVPlusValue("fbl.sh.count", old, value, out success);
-                    if (!success)
-                        return;
+                        SetVPlusValue("fbl.sh.count", old, value, out success);
+                        if (!success)
+                            return;
 
-                    _shakeCount = value;
-                    this.OnPropertyChanged(nameof(ShakeCount));
-                    // this.UpdateDisplay();
+                        _shakeCount = value;
+                        this.OnPropertyChanged(nameof(ShakeCount));
+                    }
+                }
+                else
+                {
+                    if (_shakeCount != value)
+                    {
+                        _shakeCount = value;
+                        this.OnPropertyChanged(nameof(ShakeCount));
+                    }
                 }
             }
         }
+        #endregion FlexiBowl Parameter Properties
 
-        #endregion FlexiBowl Command Parameter Properties
 
+        #region Flexibowl DelegateCommand Properties
 
-        /// <summary>
-        /// Flexibowl commands
-        /// </summary>
         public DelegateCommand FlexibowlCommand_MoveFlip { get; private set; }
         public DelegateCommand FlexibowlCommand_Move { get; private set; }
         public DelegateCommand FlexibowlCommand_Flip { get; private set; }
@@ -985,7 +1306,11 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         public DelegateCommand FlexibowlCommand_Empty { get; private set; }
         public DelegateCommand FlexibowlCommand_Reset { get; private set; }
 
-        #endregion
+        #endregion Flexibowl DelegateCommand Properties
+
+
+        #endregion Properties
+
 
         /// <summary>
         /// Constructor
@@ -1006,8 +1331,8 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             this.backgroundMonitor = new BackgroundCommandMonitor(BackGroundMonitorDelegate);
 
             this.ConnectionHelper = connectionHelper;
-            this.ConnectionCommand = new DelegateCommand(ConnectionCommandExecute);
 
+            // Instantiate Flexibowl Delegate Commands (used in Command Binding to View)
             this.FlexibowlCommand_MoveFlip = new DelegateCommand(FlexibowlExecute_MoveFlip, CanFlexibowlCommandExecute);
             this.FlexibowlCommand_Move = new DelegateCommand(FlexibowlExecute_Move, CanFlexibowlCommandExecute);
             this.FlexibowlCommand_Flip = new DelegateCommand(FlexibowlExecute_Flip, CanFlexibowlCommandExecute);
@@ -1038,59 +1363,6 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                 this.UpdateDisplay();
             }
         }
-
-        /// <summary>
-        /// Implementation of DelegateCommand "ConnectionCommand"
-        /// </summary>
-        private void ConnectionCommandExecute()
-        {
-            try
-            {
-                Task.Factory.StartNew(() =>
-                {
-                    if (!this.Controller.IsAlive)
-                    {
-                        LogToFile("ConnectionCommandExecute Connect");
-                        this.ConnectionHelper.ConnectToController(this.Controller);
-
-                        // Wait until the connection is established
-                        do
-                        {
-                            System.Threading.Thread.Sleep(500);
-                            LogToFile("Wait Connection");
-                        }
-                        while (!this.Controller.IsAlive);
-
-                        // Get the RecipeManger reference
-                        recipeManager = GetRecipeManagerReference();
-
-                        // Activate recipe to store FlexiBowl data in
-                        SelectRecipe(recipeManager);
-
-                        LogToFile("Controller " + Controller.Name + " Connected");
-
-                    }
-                    else
-                    {
-                        LogToFile("ConnectionCommandExecute Disconnect");
-                        this.ConnectionHelper.DisconnectFromController(this.Controller);
-
-                        this.backgroundMonitor.Stop();  
-
-                        // Zero all FlexiBowl property values to their default for the display of a disconnected controller
-                        this.ZeroAllVPlusValues(); 
-
-                    }
-                    this.UpdateDisplay();
-                });
-            }
-            catch (Exception ex)
-            {
-                LogToFile("ConnectionCommandExecute "+ ex.ToString());
-                OnReportError(ex.ToString());
-            }
-        }
-
 
         #region Flexibowl DelegateCommands - method implementations
 
@@ -1265,7 +1537,8 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             }
             this.UpdateDisplay();
         }
-        #endregion
+
+        #endregion Flexibowl DelegateCommands - method implementations
 
 
         /// <summary>
@@ -1276,8 +1549,6 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             var dispatcher = System.Windows.Application.Current.Dispatcher;
             try {
                 dispatcher?.Invoke(() => {
-                    this.OnPropertyChanged("ConnectionButtonText");
-                    this.ConnectionCommand.RaiseCanExecuteChanged();
 
                     this.FlexibowlCommand_MoveFlip.RaiseCanExecuteChanged();
                     this.FlexibowlCommand_Move.RaiseCanExecuteChanged();
@@ -1394,7 +1665,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         {
             if (Controller.IsAlive)
             {
-                // LogToFile("Background Task ... GetAllVPlusValues ... ");
+                GetVPlusValue("fbl.backlight", nameof(FlexiBowlBackLight), (a) => FlexiBowlBackLight = a);
                 GetVPlusValue("fbl.mf.angle", nameof(MoveFlipAngle), (a) => MoveFlipAngle = a);
                 GetVPlusValue("fbl.mf.acc", nameof(MoveFlipAcc), (a) => MoveFlipAcc = a);
                 GetVPlusValue("fbl.mf.dec", nameof(MoveFlipDec), (a) => MoveFlipDec = a);
@@ -1429,104 +1700,53 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             }
             else
             {
-                // LogToFile("Background Task ... sleep ");
+                // Controller not connected
+
+                // Zero all Flexibowl Properties in the UI
+                FlexiBowlBackLight = 0;
+                MoveFlipAngle = 0;
+                MoveFlipAcc = 0;
+                MoveFlipDec = 0;
+                MoveFlipSpeed = 0;
+                MoveFlipDelay = 0;
+                MoveFlipCount = 0;
+                MoveAngle = 0;
+                MoveAcc = 0;
+                MoveDec = 0;
+                MoveSpeed = 0;
+                FlipDelay = 0;
+                FlipCount = 0;
+                MoveBlowAngle = 0;
+                MoveBlowAcc = 0;
+                MoveBlowDec = 0;
+                MoveBlowSpeed = 0;
+                MoveBlowTime = 0;
+                BlowTime = 0;
+                MoveBlowFlipAngle = 0;
+                MoveBlowFlipAcc = 0;
+                MoveBlowFlipDec = 0;
+                MoveBlowFlipSpeed = 0;
+                MoveBlowFlipDelay = 0;
+                MoveBlowFlipCount = 0;
+                MoveBlowFlipTime = 0;
+                ShakeCWAngle = 0;
+                ShakeCCWAngle = 0;
+                ShakeAcc = 0;
+                ShakeDec = 0;
+                ShakeSpeed = 0;
+                ShakeCount = 0;
+
+                // Disable Command Buttons
+                this.UpdateDisplay();
+
+
                 System.Threading.Thread.Sleep(300);
             }
 
             return;
         }
 
-        /// <summary>
-        /// Zero all fields releated to V+ variables
-        /// </summary>
-        private void ZeroAllVPlusValues()
-        {
-
-            _flexiBowlBackLight = 0;
-
-            _moveFlipAngle = 0;
-            _moveFlipAcc = 0;
-            _moveFlipDec = 0;
-            _moveFlipSpeed = 0;
-            _moveFlipDelay = 0;
-            _moveFlipCount = 0;
-
-            _moveAngle = 0;
-            _moveAcc = 0;
-            _moveDec = 0;
-            _moveSpeed = 0;
-
-            _flipCount = 0;
-            _flipDelay = 0;
-
-            _moveBlowAngle = 0;
-            _moveBlowAcc = 0;
-            _moveBlowDec = 0;
-            _moveBlowSpeed = 0;
-            _moveBlowTime = 0;
-
-            _blowTime = 0;
-
-            _moveBlowFlipAngle = 0;
-            _moveBlowFlipAcc = 0;
-            _moveBlowFlipDec = 0;
-            _moveBlowFlipSpeed = 0;
-            _moveBlowFlipDelay = 0;
-            _moveBlowFlipCount = 0;
-            _moveBlowFlipTime = 0;
-
-            _shakeCWAngle = 0;
-            _shakeCCWAngle = 0;
-            _shakeAcc = 0;
-            _shakeDec = 0;
-            _shakeSpeed = 0;
-            _shakeCount = 0;
-
-            return;
-        }
-
-        /// <summary>
-        /// Set FlexiBowl default parameter values into the V+ Doubles
-        /// </summary>
-        private void DefaultAllVPlusValues()
-        {
-            bool success = false;
-            SetVPlusValue("fbl.backlight", _flexiBowlBackLight, 0, out success);
-            SetVPlusValue("fbl.mf.angle", _moveFlipAngle, 45, out success);
-            SetVPlusValue("fbl.mf.acc", _moveFlipAcc, 250, out success);
-            SetVPlusValue("fbl.mf.dec", _moveFlipDec, 250, out success);
-            SetVPlusValue("fbl.mf.speed", _moveFlipSpeed, 250, out success);
-            SetVPlusValue("fbl.mf.delay", _moveFlipDelay, 50, out success);
-            SetVPlusValue("fbl.mf.count", _moveFlipCount, 2, out success);
-            SetVPlusValue("fbl.m.angle", _moveAngle, 45, out success);
-            SetVPlusValue("fbl.m.acc", _moveAcc, 250, out success);
-            SetVPlusValue("fbl.m.dec", _moveDec, 250, out success);
-            SetVPlusValue("fbl.m.speed", _moveSpeed,250 , out success);
-            SetVPlusValue("fbl.f.delay", _flipCount, 2, out success);
-            SetVPlusValue("fbl.f.count", _flipDelay, 50, out success);
-            SetVPlusValue("fbl.mb.angle", _moveBlowAngle, 45, out success);
-            SetVPlusValue("fbl.mb.acc", _moveBlowAcc, 250, out success);
-            SetVPlusValue("fbl.mb.dec", _moveBlowDec, 250, out success);
-            SetVPlusValue("fbl.mb.speed", _moveBlowSpeed, 250, out success);
-            SetVPlusValue("fbl.mb.time", _moveBlowTime, 200, out success);
-            SetVPlusValue("fbl.b.time", _blowTime, 200, out success);
-            SetVPlusValue("fbl.mbf.angle", _moveBlowFlipAngle, 45, out success);
-            SetVPlusValue("fbl.mbf.acc", _moveBlowFlipAcc, 250, out success);
-            SetVPlusValue("fbl.mbf.dec", _moveBlowFlipDec, 250, out success);
-            SetVPlusValue("fbl.mbf.speed", _moveBlowFlipSpeed, 250, out success);
-            SetVPlusValue("fbl.mbf.delay", _moveBlowFlipDelay, 50, out success);
-            SetVPlusValue("fbl.mbf.count", _moveBlowFlipCount, 2, out success);
-            SetVPlusValue("fbl.mbf.time", _moveBlowFlipTime, 200, out success);
-            SetVPlusValue("fbl.sh.cw", _shakeCWAngle, 45, out success);
-            SetVPlusValue("fbl.sh.ccw", _shakeCCWAngle, -45, out success);
-            SetVPlusValue("fbl.sh.acc", _shakeAcc, 250, out success);
-            SetVPlusValue("fbl.sh.dec", _shakeDec, 250, out success);
-            SetVPlusValue("fbl.sh.speed", _shakeSpeed, 250, out success);
-            SetVPlusValue("fbl.sh.count", _shakeCount, 1, out success);
-            return;
-        }
-
-        /// <summary>
+         /// <summary>
         /// Update V+ Variable in currently selected Recipe
         /// </summary>
         /// <param name="vplusVariableName"></param>
@@ -1538,10 +1758,10 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             if (recipeManager == null) {
                 // Get the RecipeManger reference
                 recipeManager = GetRecipeManagerReference();
-
-                // Enforce activate recipe to store FlexiBowl data in
-                SelectRecipe(recipeManager);
             };
+            
+            // Enforce activate recipe to store FlexiBowl data in
+            SelectRecipe(recipeManager);
 
             if (!Controller.IsAlive)
             {
@@ -1566,20 +1786,25 @@ namespace Ace.OperatorInterface.Controller.ViewModel
 
             // Store this value to active recipe
             var variable = Controller.Memory.Variables.GetVariableByName(vplusVariableName);
-            var recipeToken = recipeManager.ActiveRecipe.CreateRecipeReference();
-            using (recipeToken)
+            var activeRecipe = recipeManager.ActiveRecipe;
+            if (activeRecipe != null)
             {
-                var recipe = recipeToken.Recipe;
-                var component = recipe.Components.Where(c => c is IVPlusGlobalVariableCollectionRecipeComponent).FirstOrDefault() as IVPlusGlobalVariableCollectionRecipeComponent;
+                var recipeToken = recipeManager.ActiveRecipe.CreateRecipeReference();
+                using (recipeToken)
+                {
+                    var recipe = recipeToken.Recipe;
+                    var component = recipe.Components.Where(c => c is IVPlusGlobalVariableCollectionRecipeComponent).FirstOrDefault() as IVPlusGlobalVariableCollectionRecipeComponent;
 
-                //LogToFile("Update '"+recipeManager.Name+
-                //          "', Recipe '"+recipe.Name+
-                //          "', Component'"+component.GetType().Name+
-                //          "', Variable '" + variable.Name + "' from " + previous.ToString() + " to " + value.ToString());
-                LogToFile(recipe.Name + ": " + variable.Name + "' from " + previous.ToString() + " to " + value.ToString());
+                    //LogToFile("Update '"+recipeManager.Name+
+                    //          "', Recipe '"+recipe.Name+
+                    //          "', Component'"+component.GetType().Name+
+                    //          "', Variable '" + variable.Name + "' from " + previous.ToString() + " to " + value.ToString());
+                    LogToFile(recipe.Name + ": " + variable.Name + " from " + previous.ToString() + " to " + value.ToString());
 
-                component.SetRealValue(variable, value);
+                    component.SetRealValue(variable, value);
+                }
             }
+
             success = true;
             return;
         }
@@ -1636,7 +1861,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             {
                 LogToFile(recipeManager.Name + " has no Recipe selected'. Will default to 'New FlexiBowl Recipe'");
 
-                // Existing list of recipes? Try scanning for 'New FlexiBowl Recipe' and activate
+                // Existing list of recipes? Scan for 'New FlexiBowl Recipe' and activate if available.
                 if (recipeManager.Recipes.Length > 0)
                 {
                     newFlexiBowlRecipeFound = false;
@@ -1651,12 +1876,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                             {// Yes, select 'New FlexiBowl Recipe'
                                 newFlexiBowlRecipeFound = true;
                                 recipeManager.SelectRecipe(r, true);
-
-                                // Read all FlexiBowl property values from the controller
-                                Controller.Memory.Pull();
                                 break;
-
-                                // Go ahead and save to 'New FlexiBowl Recipe'
                             }
                         }
                     }
@@ -1665,14 +1885,6 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                 // 'New FlexiBowl Recipe' NOT found in existing list - create and activate.
                 if (!newFlexiBowlRecipeFound)
                 {
-                    // Write default values to V+ memory
-                    this.DefaultAllVPlusValues();
-
-                    // Pull into Variables 
-                    Controller.Memory.Pull();
-
-                    // Now, this value snapshot of the variables is getting set in the new recipe
-
                     // Create and select 'New FlexiBowl Recipe'
                     LogToFile("No 'New FlexiBowl recipe' found in list. Create and select.");
 
@@ -1716,6 +1928,40 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         }
                     }
                 }
+
+                // For the new recipe, enforce default values in Recipe and V+ memory 
+                FlexiBowlBackLight = 0;
+                MoveFlipAngle = 45;
+                MoveFlipAcc = 250;
+                MoveFlipDec = 250;
+                MoveFlipSpeed = 250;
+                MoveFlipDelay = 50;
+                MoveFlipCount = 2;
+                MoveAngle = 45;
+                MoveAcc = 250;
+                MoveDec = 250;
+                MoveSpeed = 250;
+                FlipDelay = 50;
+                FlipCount = 2;
+                MoveBlowAngle = 45;
+                MoveBlowAcc = 250;
+                MoveBlowDec = 250;
+                MoveBlowSpeed = 1250;
+                MoveBlowTime = 200;
+                BlowTime = 200;
+                MoveBlowFlipAngle = 45;
+                MoveBlowFlipAcc = 250;
+                MoveBlowFlipDec = 250;
+                MoveBlowFlipSpeed = 250;
+                MoveBlowFlipDelay = 50;
+                MoveBlowFlipCount = 2;
+                MoveBlowFlipTime = 200;
+                ShakeCWAngle = 45;
+                ShakeCCWAngle = -45;
+                ShakeAcc = 250;
+                ShakeDec = 250;
+                ShakeSpeed = 250;
+                ShakeCount = 2;
             }
             catch (Exception ex)
             {
