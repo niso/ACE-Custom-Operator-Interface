@@ -109,21 +109,21 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             }            
         }
 
-        /// <summary>
-        /// Connection Button Text
-        /// </summary>
-        public string ConnectionButtonText
-        {
-            get
-            {
-                string text = "Connect";
-                if (Controller.IsAlive)
-                {
-                    text = "Disconnect";
-                }
-                return text;
-            }
-        }
+        ///// <summary>
+        ///// Connection Button Text
+        ///// </summary>
+        //public string ConnectionButtonText
+        //{
+        //    get
+        //    {
+        //        string text = "Connect";
+        //        if (Controller.IsAlive)
+        //        {
+        //            text = "Disconnect";
+        //        }
+        //        return text;
+        //    }
+        //}
 
         /// <summary>
         /// FlexiBowl-BacklLight Button Text
@@ -135,8 +135,18 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                 string text = "Light ON";
                 if (Controller.IsAlive)
                 {
-                    if(FlexiBowlBackLight!=0)
+                    if (FlexiBowlBackLight != 0)
+                    {
                         text = "Light OFF";
+                    }
+                    else
+                    {
+                        text = "Light ON";
+                    }
+                }
+                else
+                {
+                    text = "---";
                 }
                 return text;
             }
@@ -1351,18 +1361,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
          
         }
 
-        /// <summary>
-        /// Track the property changed
-        /// </summary>
-        /// <param name="propertyName"></param>
-        protected override void OnObjectPropertyModified(string propertyName)
-        {
-            base.OnObjectPropertyModified(propertyName);
-            if(propertyName == "IndicatorStateChange" || propertyName == "HighPower")
-            {
-                this.UpdateDisplay();
-            }
-        }
+
 
         #region Flexibowl DelegateCommands - method implementations
 
@@ -1384,7 +1383,34 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             {
                 Task.Factory.StartNew(() =>
                 {
-                    LogToFile("MoveFlip Command");
+                    // Set Parameter for MoveFlip Command ('0' means "do not modify register in FlexiBowl drive") 
+                    Controller.Link.SetR("fb.arg[1]", MoveFlipAcc);
+                    Controller.Link.SetR("fb.arg[2]", MoveFlipDec);
+                    Controller.Link.SetR("fb.arg[3]", MoveFlipSpeed);
+                    Controller.Link.SetR("fb.arg[4]", MoveFlipAngle);
+                    Controller.Link.SetR("fb.arg[5]", 0);
+                    Controller.Link.SetR("fb.arg[6]", 0);
+                    Controller.Link.SetR("fb.arg[7]", 0);
+                    Controller.Link.SetR("fb.arg[8]", 0);
+                    Controller.Link.SetR("fb.arg[9]", 0);
+                    Controller.Link.SetR("fb.arg[10]", 0);
+                    Controller.Link.SetR("fb.arg[11]", MoveFlipCount);
+                    Controller.Link.SetR("fb.arg[12]", MoveFlipDelay);
+                    Controller.Link.SetR("fb.arg[13]", 0);
+
+                    Controller.Link.SetR("fb.cmd", 15);
+                    LogToFile("Set MoveFlip Parameter " + Controller.Link.ListR("fb.cmd"));
+                    while (Controller.Link.ListR("fb.cmd") != 0) {
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    LogToFile("Set MoveFlip Parameter done.");
+
+                    Controller.Link.SetR("fb.cmd", 3);
+                    LogToFile("Execute MoveFlip Command "+ Controller.Link.ListR("fb.cmd"));
+                    while (Controller.Link.ListR("fb.cmd") != 0) {
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    LogToFile("Execute MoveFlip Command done");
                 });
             }
             catch (Exception ex)
@@ -1401,6 +1427,37 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                 Task.Factory.StartNew(() =>
                 {
                     LogToFile("Move Command");
+
+                    // Set Parameter for MoveFlip Command ('0' means "do not modify register in FlexiBowl drive") 
+                    Controller.Link.SetR("fb.arg[1]", MoveAcc);
+                    Controller.Link.SetR("fb.arg[2]", MoveDec);
+                    Controller.Link.SetR("fb.arg[3]", MoveSpeed);
+                    Controller.Link.SetR("fb.arg[4]", MoveAngle);
+                    Controller.Link.SetR("fb.arg[5]", 0);
+                    Controller.Link.SetR("fb.arg[6]", 0);
+                    Controller.Link.SetR("fb.arg[7]", 0);
+                    Controller.Link.SetR("fb.arg[8]", 0);
+                    Controller.Link.SetR("fb.arg[9]", 0);
+                    Controller.Link.SetR("fb.arg[10]", 0);
+                    Controller.Link.SetR("fb.arg[11]", 0);
+                    Controller.Link.SetR("fb.arg[12]", 0);
+                    Controller.Link.SetR("fb.arg[13]", 0);
+
+                    Controller.Link.SetR("fb.cmd", 15);
+                    LogToFile("Set Move Parameter " + Controller.Link.ListR("fb.cmd"));
+                    while (Controller.Link.ListR("fb.cmd") != 0)
+                    {
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    LogToFile("Set Move Parameter done.");
+
+                    Controller.Link.SetR("fb.cmd", 2);
+                    LogToFile("Execute Move Command " + Controller.Link.ListR("fb.cmd"));
+                    while (Controller.Link.ListR("fb.cmd") != 0)
+                    {
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    LogToFile("Execute Move Command done");
                 });
             }
             catch (Exception ex)
@@ -1417,6 +1474,37 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                 Task.Factory.StartNew(() =>
                 {
                     LogToFile("Flip Command");
+
+                    // Set Parameter for Flip Command ('0' means "do not modify register in FlexiBowl drive") 
+                    Controller.Link.SetR("fb.arg[1]", 0);
+                    Controller.Link.SetR("fb.arg[2]", 0);
+                    Controller.Link.SetR("fb.arg[3]", 0);
+                    Controller.Link.SetR("fb.arg[4]", 0);
+                    Controller.Link.SetR("fb.arg[5]", 0);
+                    Controller.Link.SetR("fb.arg[6]", 0);
+                    Controller.Link.SetR("fb.arg[7]", 0);
+                    Controller.Link.SetR("fb.arg[8]", 0);
+                    Controller.Link.SetR("fb.arg[9]", 0);
+                    Controller.Link.SetR("fb.arg[10]", 0);
+                    Controller.Link.SetR("fb.arg[11]", FlipCount);
+                    Controller.Link.SetR("fb.arg[12]", FlipDelay);
+                    Controller.Link.SetR("fb.arg[13]", 0);
+
+                    Controller.Link.SetR("fb.cmd", 15);
+                    LogToFile("Set Flip Parameter " + Controller.Link.ListR("fb.cmd"));
+                    while (Controller.Link.ListR("fb.cmd") != 0)
+                    {
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    LogToFile("Set Move Parameter done.");
+
+                    Controller.Link.SetR("fb.cmd", 10);
+                    LogToFile("Execute Flip Command " + Controller.Link.ListR("fb.cmd"));
+                    while (Controller.Link.ListR("fb.cmd") != 0)
+                    {
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    LogToFile("Execute Flip Command done");
                 });
             }
             catch (Exception ex)
@@ -1433,6 +1521,37 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                 Task.Factory.StartNew(() =>
                 {
                     LogToFile("MoveBlow Command");
+
+                    // Set Parameter for MoveBlow Command ('0' means "do not modify register in FlexiBowl drive") 
+                    Controller.Link.SetR("fb.arg[1]", MoveBlowAcc);
+                    Controller.Link.SetR("fb.arg[2]", MoveBlowDec);
+                    Controller.Link.SetR("fb.arg[3]", MoveBlowSpeed);
+                    Controller.Link.SetR("fb.arg[4]", MoveBlowAngle);
+                    Controller.Link.SetR("fb.arg[5]", 0);
+                    Controller.Link.SetR("fb.arg[6]", 0);
+                    Controller.Link.SetR("fb.arg[7]", 0);
+                    Controller.Link.SetR("fb.arg[8]", 0);
+                    Controller.Link.SetR("fb.arg[9]", 0);
+                    Controller.Link.SetR("fb.arg[10]", 0);
+                    Controller.Link.SetR("fb.arg[11]", 0);
+                    Controller.Link.SetR("fb.arg[12]", 0);
+                    Controller.Link.SetR("fb.arg[13]", MoveBlowTime);
+
+                    Controller.Link.SetR("fb.cmd", 15);
+                    LogToFile("Set MoveBlow Parameter " + Controller.Link.ListR("fb.cmd"));
+                    while (Controller.Link.ListR("fb.cmd") != 0)
+                    {
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    LogToFile("Set MoveBlow Parameter done.");
+
+                    Controller.Link.SetR("fb.cmd", 5);
+                    LogToFile("Execute MoveBlow Command " + Controller.Link.ListR("fb.cmd"));
+                    while (Controller.Link.ListR("fb.cmd") != 0)
+                    {
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    LogToFile("Execute MoveBlow Command done");
                 });
             }
             catch (Exception ex)
@@ -1449,6 +1568,37 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                 Task.Factory.StartNew(() =>
                 {
                     LogToFile("Blow Command");
+
+                    // Set Parameter for Blow Command ('0' means "do not modify register in FlexiBowl drive") 
+                    Controller.Link.SetR("fb.arg[1]", 0);
+                    Controller.Link.SetR("fb.arg[2]", 0);
+                    Controller.Link.SetR("fb.arg[3]", 0);
+                    Controller.Link.SetR("fb.arg[4]", 0);
+                    Controller.Link.SetR("fb.arg[5]", 0);
+                    Controller.Link.SetR("fb.arg[6]", 0);
+                    Controller.Link.SetR("fb.arg[7]", 0);
+                    Controller.Link.SetR("fb.arg[8]", 0);
+                    Controller.Link.SetR("fb.arg[9]", 0);
+                    Controller.Link.SetR("fb.arg[10]", 0);
+                    Controller.Link.SetR("fb.arg[11]", 0);
+                    Controller.Link.SetR("fb.arg[12]", 0);
+                    Controller.Link.SetR("fb.arg[13]", BlowTime);
+
+                    Controller.Link.SetR("fb.cmd", 15);
+                    LogToFile("Set Blow Parameter " + Controller.Link.ListR("fb.cmd"));
+                    while (Controller.Link.ListR("fb.cmd") != 0)
+                    {
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    LogToFile("Set Blow Parameter done.");
+
+                    Controller.Link.SetR("fb.cmd", 9);
+                    LogToFile("Execute Blow Command " + Controller.Link.ListR("fb.cmd"));
+                    while (Controller.Link.ListR("fb.cmd") != 0)
+                    {
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    LogToFile("Execute Blow Command done");
                 });
             }
             catch (Exception ex)
@@ -1465,6 +1615,37 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                 Task.Factory.StartNew(() =>
                 {
                     LogToFile("MoveBlowFlip Command");
+
+                    // Set Parameter for MoveBlowFlip Command ('0' means "do not modify register in FlexiBowl drive") 
+                    Controller.Link.SetR("fb.arg[1]", MoveBlowFlipAcc);
+                    Controller.Link.SetR("fb.arg[2]", MoveBlowFlipDec);
+                    Controller.Link.SetR("fb.arg[3]", MoveBlowFlipSpeed);
+                    Controller.Link.SetR("fb.arg[4]", MoveBlowFlipAngle);
+                    Controller.Link.SetR("fb.arg[5]", 0);
+                    Controller.Link.SetR("fb.arg[6]", 0);
+                    Controller.Link.SetR("fb.arg[7]", 0);
+                    Controller.Link.SetR("fb.arg[8]", 0);
+                    Controller.Link.SetR("fb.arg[9]", 0);
+                    Controller.Link.SetR("fb.arg[10]", 0);
+                    Controller.Link.SetR("fb.arg[11]", MoveBlowFlipCount);
+                    Controller.Link.SetR("fb.arg[12]", MoveBlowFlipDelay);
+                    Controller.Link.SetR("fb.arg[13]", MoveBlowFlipTime);
+
+                    Controller.Link.SetR("fb.cmd", 15);
+                    LogToFile("Set MoveBlowFlip Parameter " + Controller.Link.ListR("fb.cmd"));
+                    while (Controller.Link.ListR("fb.cmd") != 0)
+                    {
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    LogToFile("Set MoveBlowFlip Parameter done.");
+
+                    Controller.Link.SetR("fb.cmd", 4);
+                    LogToFile("Execute MoveBlowFlip Command " + Controller.Link.ListR("fb.cmd"));
+                    while (Controller.Link.ListR("fb.cmd") != 0)
+                    {
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    LogToFile("Execute MoveBlowFlip Command done");
                 });
             }
             catch (Exception ex)
@@ -1481,6 +1662,37 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                 Task.Factory.StartNew(() =>
                 {
                     LogToFile("Shake Command");
+
+                    // Set Parameter for Shake Command ('0' means "do not modify register in FlexiBowl drive") 
+                    Controller.Link.SetR("fb.arg[1]", 0);
+                    Controller.Link.SetR("fb.arg[2]", 0);
+                    Controller.Link.SetR("fb.arg[3]", 0);
+                    Controller.Link.SetR("fb.arg[4]", 0);
+                    Controller.Link.SetR("fb.arg[5]", ShakeAcc);
+                    Controller.Link.SetR("fb.arg[6]", ShakeDec);
+                    Controller.Link.SetR("fb.arg[7]", ShakeCount);
+                    Controller.Link.SetR("fb.arg[8]", ShakeCWAngle);
+                    Controller.Link.SetR("fb.arg[9]", ShakeCCWAngle);
+                    Controller.Link.SetR("fb.arg[10]", ShakeSpeed);
+                    Controller.Link.SetR("fb.arg[11]", 0);
+                    Controller.Link.SetR("fb.arg[12]", 0);
+                    Controller.Link.SetR("fb.arg[13]", 0);
+
+                    Controller.Link.SetR("fb.cmd", 15);
+                    LogToFile("Set Shake Parameter " + Controller.Link.ListR("fb.cmd"));
+                    while (Controller.Link.ListR("fb.cmd") != 0)
+                    {
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    LogToFile("Set Shake Parameter done.");
+
+                    Controller.Link.SetR("fb.cmd", 6);
+                    LogToFile("Execute Shake Command " + Controller.Link.ListR("fb.cmd"));
+                    while (Controller.Link.ListR("fb.cmd") != 0)
+                    {
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    LogToFile("Execute Shake Command done");
                 });
             }
             catch (Exception ex)
@@ -1496,7 +1708,19 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             {
                 Task.Factory.StartNew(() =>
                 {
-                    LogToFile("Light Command");
+
+
+                    if (FlexiBowlBackLight == -1)
+                    {     
+                        LogToFile("Light Command -1");
+                        FlexiBowlBackLight = 0;
+                    }
+                    else
+                    {
+                        LogToFile("Light Command 0");
+                        FlexiBowlBackLight = -1;
+                    }
+                    UpdateDisplay();    
                 });
             }
             catch (Exception ex)
@@ -1561,7 +1785,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     this.FlexibowlCommand_Empty.RaiseCanExecuteChanged();
                     this.FlexibowlCommand_Reset.RaiseCanExecuteChanged();
 
-                    this.OnPropertyChanged("FlexiBowlBackLight");
+                    this.OnPropertyChanged("FlexiBowlBackLightButtonText");
                     this.OnPropertyChanged("MoveFlipAngle");
                     this.OnPropertyChanged("MoveFlipAcc");
                     this.OnPropertyChanged("MoveFlipDec");
@@ -1601,7 +1825,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         }
 
         /// <summary>
-        /// Set value of individual V+ Double in Controller Memory
+        /// Set V+ Double in Controller Memory
         /// </summary>
         /// <param name="vPlusVariableName"></param>
         /// <param name="previous"></param>
@@ -1627,7 +1851,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         }
 
         /// <summary>
-        /// Get value of indivudual V+ Double from Controller Memory. Skip, if this is the selected TextBox.
+        /// Get V+ Double from Controller Memory. Skip, for selected TextBox.
         /// </summary>
         /// <param name="vPlusVariableName"></param>
         private void GetVPlusValue(string vPlusVariableName, string propertyName, Action<double> setter)
@@ -1658,8 +1882,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         }
 
         /// <summary>
-        /// Read complete list of V+ Doubles in Custom UI. 
-        /// Implementation of the Action delegate, getting passed over to the BackgroundCommandMonitor.
+        /// BackgroundCommandMonitor - Implementation of the Action delegate. Read complete list of V+ Doubles in Custom UI. 
         /// </summary>
         private void GetAllVPlusValues()
         {
@@ -1746,7 +1969,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             return;
         }
 
-         /// <summary>
+        /// <summary>
         /// Update V+ Variable in currently selected Recipe
         /// </summary>
         /// <param name="vplusVariableName"></param>
@@ -1978,6 +2201,20 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         static void LogToFile(string text)
         {
             System.IO.File.AppendAllText("C:\\temp\\log.txt", text+Environment.NewLine);
+        }
+
+
+        /// <summary>
+        /// Track the property changed
+        /// </summary>
+        /// <param name="propertyName"></param>
+        protected override void OnObjectPropertyModified(string propertyName)
+        {
+            base.OnObjectPropertyModified(propertyName);
+            if(propertyName == "IndicatorStateChange" || propertyName == "HighPower")
+            {
+                this.UpdateDisplay();
+            }
         }
 
         public override void UnhookEvents() {
