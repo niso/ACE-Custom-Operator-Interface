@@ -70,6 +70,19 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         private double _shakeSpeed = 0;
         private double _shakeCount = 0;
 
+        private double _fbParamSet = 15;
+        private double _fbMove = 2;
+        private double _fbMoveFlip = 3;
+        private double _fbFlip = 10;
+        private double _fbMoveBlow = 5;
+        private double _fbBlow = 9;
+        private double _fbMoveBlowFlip = 4;
+        private double _fbShake = 6;
+        //private double _fbLightOn = 7;
+        //private double _fbLightOff = 8;
+        //private double _fbQickEmpty = 11;
+        //private double _fbResetAlarm = 12;
+
         #endregion Fields
 
 
@@ -97,6 +110,8 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         /// Background thread to update V+ variable changes
         /// </summary>
         private BackgroundCommandMonitor backgroundMonitor;
+
+
 
         /// <summary>
         /// Controller
@@ -1323,7 +1338,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
 
 
         /// <summary>
-        /// Constructor
+        /// CONSTRUCTOR
         /// </summary>
         /// <param name="controller"></param>
         /// <param name="connectionHelper"></param>
@@ -1361,9 +1376,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
          
         }
 
-
-
-        #region Flexibowl DelegateCommands - method implementations
+        #region Flexibowl DelegateCommands (Method Implementations)
 
         /// <summary>
         /// Check condition for Execute command being valid.
@@ -1377,6 +1390,36 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                 return Controller.IsAlive;
         }
 
+
+        /// <summary>
+        /// All Flexibowl Commands work together with the V+ program "fb.comm()", which is responsible 
+        /// to send messages to the Applied Motion STAC5 stepper motor driver over TCP/IP. 
+        /// 
+        /// The flow of this V+ user task is controlled using the V+ variable 'fb.cmd' (FlexiBowl Command) 
+        /// and the parameters for the commands are written to the V+ array fb.arg[]. 
+        /// 
+        /// This C# application uses the 'Link' class to remotely manipulate the V+ variables from here.
+        /// 
+        ///    * fb.cmd - defines the Flexibowl commands in V+ (see V+ program fb.init() for details)
+        ///    
+        ///         * 'fb.param.set' causes the V+ program fb.set_param() to run
+        ///           In fb.set_param() all non-zero fb.arg[] values get communicated to the STAC5 motor driver registers,
+        ///           to be used in subsequent commands, like listed below.
+        ///           
+        ///         * Each of the other commands listed below eXecute a so called 'Q-Program' (--> "QXnn") inside the 
+        ///           STAC5 driver, acting on the parameters written to the driver registers before (see above)
+        ///            _fbMove          - "QX2" 
+        ///            _fbMoveFlip      - "QX3"
+        ///            _fbFlip          - "QX10"
+        ///            _fbMoveBlow      - "QX5"
+        ///            _fbBlow          - "QX9"
+        ///            _fbMoveBlowFlip  - "QX4"
+        ///            _fbShake         - "QX6"
+        ///            _fbLightOn       - "QX7"
+        ///            _fbLightOff      - "QX8"
+        ///            _fbQickEmpty     - "QX11"
+        ///            _fbResetAlarm    - "QX12"
+        /// </summary>
         private void FlexibowlExecute_MoveFlip()
         {
             try
@@ -1398,16 +1441,18 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     Controller.Link.SetR("fb.arg[12]", MoveFlipDelay);
                     Controller.Link.SetR("fb.arg[13]", 0);
 
-                    Controller.Link.SetR("fb.cmd", 15);
+                    Controller.Link.SetR("fb.cmd", _fbParamSet);
                     LogToFile("Set MoveFlip Parameter " + Controller.Link.ListR("fb.cmd"));
-                    while (Controller.Link.ListR("fb.cmd") != 0) {
+                    while (Controller.Link.ListR("fb.cmd") != 0) 
+                    {
                         System.Threading.Thread.Sleep(100);
                     }
                     LogToFile("Set MoveFlip Parameter done.");
 
-                    Controller.Link.SetR("fb.cmd", 3);
+                    Controller.Link.SetR("fb.cmd", _fbMoveFlip);
                     LogToFile("Execute MoveFlip Command "+ Controller.Link.ListR("fb.cmd"));
-                    while (Controller.Link.ListR("fb.cmd") != 0) {
+                    while (Controller.Link.ListR("fb.cmd") != 0) 
+                    {
                         System.Threading.Thread.Sleep(100);
                     }
                     LogToFile("Execute MoveFlip Command done");
@@ -1443,7 +1488,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     Controller.Link.SetR("fb.arg[12]", 0);
                     Controller.Link.SetR("fb.arg[13]", 0);
 
-                    Controller.Link.SetR("fb.cmd", 15);
+                    Controller.Link.SetR("fb.cmd", _fbParamSet);
                     LogToFile("Set Move Parameter " + Controller.Link.ListR("fb.cmd"));
                     while (Controller.Link.ListR("fb.cmd") != 0)
                     {
@@ -1451,7 +1496,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     }
                     LogToFile("Set Move Parameter done.");
 
-                    Controller.Link.SetR("fb.cmd", 2);
+                    Controller.Link.SetR("fb.cmd", _fbMove);
                     LogToFile("Execute Move Command " + Controller.Link.ListR("fb.cmd"));
                     while (Controller.Link.ListR("fb.cmd") != 0)
                     {
@@ -1490,7 +1535,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     Controller.Link.SetR("fb.arg[12]", FlipDelay);
                     Controller.Link.SetR("fb.arg[13]", 0);
 
-                    Controller.Link.SetR("fb.cmd", 15);
+                    Controller.Link.SetR("fb.cmd", _fbParamSet);
                     LogToFile("Set Flip Parameter " + Controller.Link.ListR("fb.cmd"));
                     while (Controller.Link.ListR("fb.cmd") != 0)
                     {
@@ -1498,7 +1543,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     }
                     LogToFile("Set Move Parameter done.");
 
-                    Controller.Link.SetR("fb.cmd", 10);
+                    Controller.Link.SetR("fb.cmd", _fbFlip);
                     LogToFile("Execute Flip Command " + Controller.Link.ListR("fb.cmd"));
                     while (Controller.Link.ListR("fb.cmd") != 0)
                     {
@@ -1537,7 +1582,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     Controller.Link.SetR("fb.arg[12]", 0);
                     Controller.Link.SetR("fb.arg[13]", MoveBlowTime);
 
-                    Controller.Link.SetR("fb.cmd", 15);
+                    Controller.Link.SetR("fb.cmd", _fbParamSet);
                     LogToFile("Set MoveBlow Parameter " + Controller.Link.ListR("fb.cmd"));
                     while (Controller.Link.ListR("fb.cmd") != 0)
                     {
@@ -1545,7 +1590,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     }
                     LogToFile("Set MoveBlow Parameter done.");
 
-                    Controller.Link.SetR("fb.cmd", 5);
+                    Controller.Link.SetR("fb.cmd", _fbMoveBlow);
                     LogToFile("Execute MoveBlow Command " + Controller.Link.ListR("fb.cmd"));
                     while (Controller.Link.ListR("fb.cmd") != 0)
                     {
@@ -1584,7 +1629,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     Controller.Link.SetR("fb.arg[12]", 0);
                     Controller.Link.SetR("fb.arg[13]", BlowTime);
 
-                    Controller.Link.SetR("fb.cmd", 15);
+                    Controller.Link.SetR("fb.cmd", _fbParamSet);
                     LogToFile("Set Blow Parameter " + Controller.Link.ListR("fb.cmd"));
                     while (Controller.Link.ListR("fb.cmd") != 0)
                     {
@@ -1592,7 +1637,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     }
                     LogToFile("Set Blow Parameter done.");
 
-                    Controller.Link.SetR("fb.cmd", 9);
+                    Controller.Link.SetR("fb.cmd", _fbBlow);
                     LogToFile("Execute Blow Command " + Controller.Link.ListR("fb.cmd"));
                     while (Controller.Link.ListR("fb.cmd") != 0)
                     {
@@ -1631,7 +1676,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     Controller.Link.SetR("fb.arg[12]", MoveBlowFlipDelay);
                     Controller.Link.SetR("fb.arg[13]", MoveBlowFlipTime);
 
-                    Controller.Link.SetR("fb.cmd", 15);
+                    Controller.Link.SetR("fb.cmd", _fbParamSet);
                     LogToFile("Set MoveBlowFlip Parameter " + Controller.Link.ListR("fb.cmd"));
                     while (Controller.Link.ListR("fb.cmd") != 0)
                     {
@@ -1639,7 +1684,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     }
                     LogToFile("Set MoveBlowFlip Parameter done.");
 
-                    Controller.Link.SetR("fb.cmd", 4);
+                    Controller.Link.SetR("fb.cmd", _fbMoveBlowFlip);
                     LogToFile("Execute MoveBlowFlip Command " + Controller.Link.ListR("fb.cmd"));
                     while (Controller.Link.ListR("fb.cmd") != 0)
                     {
@@ -1678,7 +1723,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     Controller.Link.SetR("fb.arg[12]", 0);
                     Controller.Link.SetR("fb.arg[13]", 0);
 
-                    Controller.Link.SetR("fb.cmd", 15);
+                    Controller.Link.SetR("fb.cmd", _fbParamSet);
                     LogToFile("Set Shake Parameter " + Controller.Link.ListR("fb.cmd"));
                     while (Controller.Link.ListR("fb.cmd") != 0)
                     {
@@ -1686,7 +1731,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     }
                     LogToFile("Set Shake Parameter done.");
 
-                    Controller.Link.SetR("fb.cmd", 6);
+                    Controller.Link.SetR("fb.cmd", _fbShake);
                     LogToFile("Execute Shake Command " + Controller.Link.ListR("fb.cmd"));
                     while (Controller.Link.ListR("fb.cmd") != 0)
                     {
@@ -1711,7 +1756,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
 
 
                     if (FlexiBowlBackLight == -1)
-                    {     
+                    {
                         LogToFile("Light Command -1");
                         FlexiBowlBackLight = 0;
                     }
@@ -1720,7 +1765,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         LogToFile("Light Command 0");
                         FlexiBowlBackLight = -1;
                     }
-                    UpdateDisplay();    
+                    UpdateDisplay();
                 });
             }
             catch (Exception ex)

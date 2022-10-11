@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Ace.Client.BackgroundCommandMonitor">
-    <Position X="8.5" Y="9.25" Width="2.5" />
+    <Position X="8.5" Y="8" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAgAAACAAAAEAgAgAAAABAAQAAYAAIAAAAAABAAA=</HashCode>
+      <HashCode>AAAAAgAAACAAAAEAAAgAAAABAAQAAYAAIAAAAAABAAA=</HashCode>
       <FileName>BackgroundCommandMonitor.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -20,12 +20,12 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>Gk4UEgEgWRFAkHBOgyASBDQXAhFFawoFAICpTDAEAAQ=</HashCode>
+      <HashCode>Gm40Eglx+ZVAkHBOgyAWhRwXQhVEa4OFAIDpTDAEAAU=</HashCode>
       <FileName>Controller\ViewModel\ControllerViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Ace.OperatorInterface.DelegateCommand" BaseTypeListCollapsed="true">
-    <Position X="14.5" Y="13" Width="2.5" />
+    <Position X="14.5" Y="8.5" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAQEACAAQAAECAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>DelegateCommand.cs</FileName>
@@ -51,7 +51,7 @@
   <Class Name="Ace.OperatorInterface.View.OperatorInterfaceView" BaseTypeListCollapsed="true">
     <Position X="4.75" Y="1.5" Width="3.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAEAAAAAAAAAAAACAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AQAAAAAAAEAAAAAAAAAACACAAAQAAAAAAAAAAAAAEAA=</HashCode>
       <FileName>View\OperatorInterfaceView.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -73,7 +73,7 @@
   <Class Name="Ace.OperatorInterface.ViewModel.OperatorInterfaceViewModel">
     <Position X="14.5" Y="4.5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>wCAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <HashCode>wCQAAAAEAAAAAEAAAAAAAAABAAAAAAAAAAAAAACAAAA=</HashCode>
       <FileName>ViewModel\OperatorInterfaceViewModel.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="1.673" />
