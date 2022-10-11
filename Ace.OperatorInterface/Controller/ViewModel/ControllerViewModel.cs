@@ -1880,7 +1880,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         {
             try
             {
-                LogToFile("V+ Memory Update:     " + vPlusVariableName + " from " + previous.ToString() + " to "+ value.ToString());
+                // LogToFile("V+ Memory Update:     " + vPlusVariableName + " from " + previous.ToString() + " to "+ value.ToString());
 
                 var link = this.Controller.Link;
                 link.SetR(vPlusVariableName, value);
@@ -2063,10 +2063,6 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     var recipe = recipeToken.Recipe;
                     var component = recipe.Components.Where(c => c is IVPlusGlobalVariableCollectionRecipeComponent).FirstOrDefault() as IVPlusGlobalVariableCollectionRecipeComponent;
 
-                    //LogToFile("Update '"+recipeManager.Name+
-                    //          "', Recipe '"+recipe.Name+
-                    //          "', Component'"+component.GetType().Name+
-                    //          "', Variable '" + variable.Name + "' from " + previous.ToString() + " to " + value.ToString());
                     LogToFile(recipe.Name + ": " + variable.Name + " from " + previous.ToString() + " to " + value.ToString());
 
                     component.SetRealValue(variable, value);
