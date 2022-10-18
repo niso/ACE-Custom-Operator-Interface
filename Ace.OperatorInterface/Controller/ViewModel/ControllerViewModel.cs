@@ -6,13 +6,18 @@ using Ace.OperatorInterface.ViewModel;
 using Ace.Server.Adept.Controllers;
 using Ace.Server.Adept.Controllers.Memory;
 using Ace.Server.Core.Recipes;
+using Ace.Server.Core.Variable;
 using Ace.Services.LogService;
 using Ace.Services.NameLookup;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Ace.Communication.Services.Link;
-
+using static System.Net.Mime.MediaTypeNames;
+using System.Windows.Shapes;
+//using System.Collections.Concurrent;
+//using System.IO;
+//using System.Threading;
 
 namespace Ace.OperatorInterface.Controller.ViewModel
 {
@@ -26,9 +31,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
 
         public ILogService logService;
 
-
-        public IRecipeManager recipeManager;
-        public bool newFlexiBowlRecipeFound;
+        private static object lockObject = new object();
 
         private double _flexiBowlBackLight = 0;
 
@@ -83,11 +86,57 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         //private double _fbQickEmpty = 11;
         //private double _fbResetAlarm = 12;
 
-        #endregion Fields
+        /// <summary>
+        /// Background thread to update V+ variable and recipe selection changes
+        /// </summary>
+        private BackgroundCommandMonitor backgroundMonitor;
 
+
+        public static string aceAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)+@"\OMRON\ACE";
+
+        public IRecipeManager recipeManager;
+        private string _lastActiveRecipe = "";
+
+        public bool storedRecipeFound;
+
+        #endregion Fields
 
         #region Properties
 
+        /// <summary>
+        /// Last active recipe - persisted to %APPDATA\OMRON\ACE\LastActiveRecipe.txt
+        /// (Workaround because ACE by itself does not save the last recipe selected into the workspace project)
+        /// </summary>
+        public string LastActiveRecipe
+        {
+            get
+            {
+                if (File.Exists(aceAppDataFolder + @"\LastActiveRecipe.txt"))
+                {
+                    // Return value from save file
+                    _lastActiveRecipe = File.ReadAllText(aceAppDataFolder + @"\LastActiveRecipe.txt");
+
+                }
+                return _lastActiveRecipe;
+            }
+            set
+            {
+                if (Controller.IsAlive)
+                {
+                    if (_lastActiveRecipe != value)
+                    {
+                        // Delete old save file
+                        if (File.Exists(aceAppDataFolder + @"\LastActiveRecipe.txt"))
+                        {
+                            System.IO.File.Delete(aceAppDataFolder + @"\LastActiveRecipe.txt");
+                        }
+                        // Save new file
+                        System.IO.File.AppendAllText(aceAppDataFolder + @"\LastActiveRecipe.txt", value);
+                        this.OnPropertyChanged(nameof(LastActiveRecipe));
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// DisplayName
@@ -97,7 +146,6 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             get
             {
               return "<" + base.DisplayName + ">";
-            //  return " "+ base.DisplayName + " ";
             }
         }
 
@@ -105,13 +153,6 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         /// NameLookupService
         /// </summary>
         protected INameLookupService NameLookupService { get; set; }
-
-        /// <summary>
-        /// Background thread to update V+ variable changes
-        /// </summary>
-        private BackgroundCommandMonitor backgroundMonitor;
-
-
 
         /// <summary>
         /// Controller
@@ -123,22 +164,6 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                 return this.ObjectHandle as IAdeptController;
             }            
         }
-
-        ///// <summary>
-        ///// Connection Button Text
-        ///// </summary>
-        //public string ConnectionButtonText
-        //{
-        //    get
-        //    {
-        //        string text = "Connect";
-        //        if (Controller.IsAlive)
-        //        {
-        //            text = "Disconnect";
-        //        }
-        //        return text;
-        //    }
-        //}
 
         /// <summary>
         /// FlexiBowl-BacklLight Button Text
@@ -201,15 +226,13 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _flexiBowlBackLight;
 
+                        RecipeManagerUpdate("fbl.backlight", old, ref value, out success);
+                        if (!success)
+                            return;
+
                         SetVPlusValue("fbl.backlight", old, value, out success);
                         if (!success)
                             return;
-
-
-                        UpdateRecipeManager("fbl.backlight", old, ref value, out success);
-                        if (!success)
-                            return;
-
                     
                         _flexiBowlBackLight = value;
                         this.OnPropertyChanged(nameof(FlexiBowlBackLight));
@@ -241,7 +264,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveFlipAngle;
 
-                        UpdateRecipeManager("fbl.mf.angle", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.mf.angle", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -278,7 +301,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveFlipAcc;
              
-                        UpdateRecipeManager("fbl.mf.acc", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.mf.acc", old, ref value, out success);
                         if (!success)
                             return;
         
@@ -312,7 +335,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveFlipDec;
 
-                        UpdateRecipeManager("fbl.mf.dec", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.mf.dec", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -346,7 +369,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveFlipSpeed;
 
-                        UpdateRecipeManager("fbl.mf.speed", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.mf.speed", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -380,7 +403,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveFlipDelay;
 
-                        UpdateRecipeManager("fbl.mf.delay", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.mf.delay", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -414,7 +437,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveFlipCount;
 
-                        UpdateRecipeManager("fbl.mf.count", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.mf.count", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -452,7 +475,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveAngle;
 
-                        UpdateRecipeManager("fbl.m.angle", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.m.angle", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -486,7 +509,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveAcc;
 
-                        UpdateRecipeManager("fbl.m.acc", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.m.acc", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -520,7 +543,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveDec;
 
-                        UpdateRecipeManager("fbl.m.dec", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.m.dec", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -554,7 +577,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveSpeed;
 
-                        UpdateRecipeManager("fbl.m.speed", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.m.speed", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -592,7 +615,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _flipDelay;
 
-                        UpdateRecipeManager("fbl.f.delay", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.f.delay", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -627,7 +650,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _flipCount;
 
-                        UpdateRecipeManager("fbl.f.count", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.f.count", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -665,7 +688,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveBlowAngle;
 
-                        UpdateRecipeManager("fbl.mb.angle", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.mb.angle", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -699,7 +722,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveBlowAcc;
 
-                        UpdateRecipeManager("fbl.mb.acc", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.mb.acc", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -734,7 +757,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveBlowDec;
 
-                        UpdateRecipeManager("fbl.mb.dec", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.mb.dec", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -768,7 +791,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveBlowSpeed;
 
-                        UpdateRecipeManager("fbl.mb.speed", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.mb.speed", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -802,7 +825,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveBlowTime;
 
-                        UpdateRecipeManager("fbl.mb.time", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.mb.time", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -840,7 +863,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _blowTime;
 
-                        UpdateRecipeManager("fbl.b.time", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.b.time", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -878,7 +901,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveBlowFlipAngle;
 
-                        UpdateRecipeManager("fbl.mbf.angle", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.mbf.angle", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -914,7 +937,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveBlowFlipAcc;
 
-                        UpdateRecipeManager("fbl.mbf.acc", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.mbf.acc", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -948,7 +971,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveBlowFlipDec;
 
-                        UpdateRecipeManager("fbl.mbf.dec", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.mbf.dec", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -982,7 +1005,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveBlowFlipSpeed;
 
-                        UpdateRecipeManager("fbl.mbf.speed", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.mbf.speed", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -1016,7 +1039,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveBlowFlipDelay;
 
-                        UpdateRecipeManager("fbl.mbf.delay", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.mbf.delay", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -1051,7 +1074,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveBlowFlipCount;
 
-                        UpdateRecipeManager("fbl.mbf.count", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.mbf.count", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -1085,7 +1108,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _moveBlowFlipTime;
 
-                        UpdateRecipeManager("fbl.mbf.time", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.mbf.time", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -1123,7 +1146,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _shakeCWAngle;
 
-                        UpdateRecipeManager("fbl.sh.cw", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.sh.cw", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -1157,7 +1180,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _shakeCCWAngle;
 
-                        UpdateRecipeManager("fbl.sh.ccw", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.sh.ccw", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -1191,7 +1214,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _shakeAcc;
 
-                        UpdateRecipeManager("fbl.sh.acc", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.sh.acc", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -1225,7 +1248,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _shakeDec;
 
-                       UpdateRecipeManager("fbl.sh.dec", old, ref value, out success);
+                       RecipeManagerUpdate("fbl.sh.dec", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -1259,7 +1282,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _shakeSpeed;
 
-                        UpdateRecipeManager("fbl.sh.speed", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.sh.speed", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -1293,7 +1316,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                         bool success = false;
                         double old = _shakeCount;
 
-                        UpdateRecipeManager("fbl.sh.count", old, ref value, out success);
+                        RecipeManagerUpdate("fbl.sh.count", old, ref value, out success);
                         if (!success)
                             return;
 
@@ -1331,6 +1354,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         public DelegateCommand FlexibowlCommand_Empty { get; private set; }
         public DelegateCommand FlexibowlCommand_Reset { get; private set; }
 
+
         #endregion Flexibowl DelegateCommand Properties
 
 
@@ -1349,8 +1373,8 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             // Assign method to Action Delegate
             LogMethodDelegate = LogToFile;
 
-            // Assign method to Action Delegate
-            BackGroundMonitorDelegate = GetAllVPlusValues;
+            // Assign method to Action-Delegate
+            BackGroundMonitorDelegate = BackgroundMonitorMethod;
 
             // Instantiate background monitor, handle over deleagte 
             this.backgroundMonitor = new BackgroundCommandMonitor(BackGroundMonitorDelegate);
@@ -1373,23 +1397,10 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             backgroundMonitor.Start();
 
             this.UpdateDisplay();
-         
         }
+
 
         #region Flexibowl DelegateCommands (Method Implementations)
-
-        /// <summary>
-        /// Check condition for Execute command being valid.
-        /// </summary>
-        /// <returns></returns>
-        private bool CanFlexibowlCommandExecute()
-        {
-           //   TODO-s:
-           //   Check for modern inline implementation as anonyomous method
-           //   Check for V+ variable, indicating "No Q-Seqment running in AppliedMotion Controller (Flexibowl drive)"
-                return Controller.IsAlive;
-        }
-
 
         /// <summary>
         /// All Flexibowl Commands work together with the V+ program "fb.comm()", which is responsible 
@@ -1419,14 +1430,29 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         ///            _fbLightOff      - "QX8"
         ///            _fbQickEmpty     - "QX11"
         ///            _fbResetAlarm    - "QX12"
+
+        
         /// </summary>
+        /// <summary>
+        /// Check condition for Execute command being valid.
+        /// </summary>
+        /// <returns></returns>
+        private bool CanFlexibowlCommandExecute()
+        {
+           //   TODO-s:
+           //   Check for modern inline implementation as anonyomous method
+           //   Check for V+ variable, indicating "No Q-Seqment running in AppliedMotion Controller (Flexibowl drive)"
+                return Controller.IsAlive;
+        }
+
+
         private void FlexibowlExecute_MoveFlip()
         {
             try
             {
                 Task.Factory.StartNew(() =>
                 {
-                    // Set Parameter for MoveFlip Command ('0' means "do not modify register in FlexiBowl drive") 
+                    // Set Parameter for MoveFlip Command ('0' means "skip modifying register in FlexiBowl drive in V+ program fb.set_param()") 
                     Controller.Link.SetR("fb.arg[1]", MoveFlipAcc);
                     Controller.Link.SetR("fb.arg[2]", MoveFlipDec);
                     Controller.Link.SetR("fb.arg[3]", MoveFlipSpeed);
@@ -1447,7 +1473,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     {
                         System.Threading.Thread.Sleep(100);
                     }
-                    LogToFile("Set MoveFlip Parameter done.");
+                    //LogToFile("Set MoveFlip Parameter done.");
 
                     Controller.Link.SetR("fb.cmd", _fbMoveFlip);
                     LogToFile("Execute MoveFlip Command "+ Controller.Link.ListR("fb.cmd"));
@@ -1455,7 +1481,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     {
                         System.Threading.Thread.Sleep(100);
                     }
-                    LogToFile("Execute MoveFlip Command done");
+                    //LogToFile("Execute MoveFlip Command done");
                 });
             }
             catch (Exception ex)
@@ -1471,9 +1497,9 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             {
                 Task.Factory.StartNew(() =>
                 {
-                    LogToFile("Move Command");
+                    //LogToFile("Move Command");
 
-                    // Set Parameter for MoveFlip Command ('0' means "do not modify register in FlexiBowl drive") 
+                    // Set Parameter for MoveFlip Command ('0' means "skip modifying register in FlexiBowl drive in V+ program fb.set_param()") 
                     Controller.Link.SetR("fb.arg[1]", MoveAcc);
                     Controller.Link.SetR("fb.arg[2]", MoveDec);
                     Controller.Link.SetR("fb.arg[3]", MoveSpeed);
@@ -1494,7 +1520,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     {
                         System.Threading.Thread.Sleep(100);
                     }
-                    LogToFile("Set Move Parameter done.");
+                    //LogToFile("Set Move Parameter done.");
 
                     Controller.Link.SetR("fb.cmd", _fbMove);
                     LogToFile("Execute Move Command " + Controller.Link.ListR("fb.cmd"));
@@ -1502,7 +1528,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     {
                         System.Threading.Thread.Sleep(100);
                     }
-                    LogToFile("Execute Move Command done");
+                    //LogToFile("Execute Move Command done");
                 });
             }
             catch (Exception ex)
@@ -1518,9 +1544,9 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             {
                 Task.Factory.StartNew(() =>
                 {
-                    LogToFile("Flip Command");
+                    //LogToFile("Flip Command");
 
-                    // Set Parameter for Flip Command ('0' means "do not modify register in FlexiBowl drive") 
+                    // Set Parameter for Flip Command ('0' means "skip modifying register in FlexiBowl drive in V+ program fb.set_param()") 
                     Controller.Link.SetR("fb.arg[1]", 0);
                     Controller.Link.SetR("fb.arg[2]", 0);
                     Controller.Link.SetR("fb.arg[3]", 0);
@@ -1541,7 +1567,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     {
                         System.Threading.Thread.Sleep(100);
                     }
-                    LogToFile("Set Move Parameter done.");
+                    //LogToFile("Set Move Parameter done.");
 
                     Controller.Link.SetR("fb.cmd", _fbFlip);
                     LogToFile("Execute Flip Command " + Controller.Link.ListR("fb.cmd"));
@@ -1549,7 +1575,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     {
                         System.Threading.Thread.Sleep(100);
                     }
-                    LogToFile("Execute Flip Command done");
+                    //LogToFile("Execute Flip Command done");
                 });
             }
             catch (Exception ex)
@@ -1565,9 +1591,9 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             {
                 Task.Factory.StartNew(() =>
                 {
-                    LogToFile("MoveBlow Command");
+                    //LogToFile("MoveBlow Command");
 
-                    // Set Parameter for MoveBlow Command ('0' means "do not modify register in FlexiBowl drive") 
+                    // Set Parameter for MoveBlow Command ('0' means "skip modifying register in FlexiBowl drive in V+ program fb.set_param()") 
                     Controller.Link.SetR("fb.arg[1]", MoveBlowAcc);
                     Controller.Link.SetR("fb.arg[2]", MoveBlowDec);
                     Controller.Link.SetR("fb.arg[3]", MoveBlowSpeed);
@@ -1588,7 +1614,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     {
                         System.Threading.Thread.Sleep(100);
                     }
-                    LogToFile("Set MoveBlow Parameter done.");
+                    //LogToFile("Set MoveBlow Parameter done.");
 
                     Controller.Link.SetR("fb.cmd", _fbMoveBlow);
                     LogToFile("Execute MoveBlow Command " + Controller.Link.ListR("fb.cmd"));
@@ -1596,7 +1622,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     {
                         System.Threading.Thread.Sleep(100);
                     }
-                    LogToFile("Execute MoveBlow Command done");
+                    //LogToFile("Execute MoveBlow Command done");
                 });
             }
             catch (Exception ex)
@@ -1614,7 +1640,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                 {
                     LogToFile("Blow Command");
 
-                    // Set Parameter for Blow Command ('0' means "do not modify register in FlexiBowl drive") 
+                    // Set Parameter for Blow Command ('0' means "skip modifying register in FlexiBowl drive in V+ program fb.set_param()") 
                     Controller.Link.SetR("fb.arg[1]", 0);
                     Controller.Link.SetR("fb.arg[2]", 0);
                     Controller.Link.SetR("fb.arg[3]", 0);
@@ -1635,7 +1661,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     {
                         System.Threading.Thread.Sleep(100);
                     }
-                    LogToFile("Set Blow Parameter done.");
+                    //LogToFile("Set Blow Parameter done.");
 
                     Controller.Link.SetR("fb.cmd", _fbBlow);
                     LogToFile("Execute Blow Command " + Controller.Link.ListR("fb.cmd"));
@@ -1643,7 +1669,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     {
                         System.Threading.Thread.Sleep(100);
                     }
-                    LogToFile("Execute Blow Command done");
+                    //LogToFile("Execute Blow Command done");
                 });
             }
             catch (Exception ex)
@@ -1659,9 +1685,9 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             {
                 Task.Factory.StartNew(() =>
                 {
-                    LogToFile("MoveBlowFlip Command");
+                    //LogToFile("MoveBlowFlip Command");
 
-                    // Set Parameter for MoveBlowFlip Command ('0' means "do not modify register in FlexiBowl drive") 
+                    // Set Parameter for MoveBlowFlip Command ('0' means "skip modifying register in FlexiBowl drive in V+ program fb.set_param()") 
                     Controller.Link.SetR("fb.arg[1]", MoveBlowFlipAcc);
                     Controller.Link.SetR("fb.arg[2]", MoveBlowFlipDec);
                     Controller.Link.SetR("fb.arg[3]", MoveBlowFlipSpeed);
@@ -1682,7 +1708,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     {
                         System.Threading.Thread.Sleep(100);
                     }
-                    LogToFile("Set MoveBlowFlip Parameter done.");
+                    //LogToFile("Set MoveBlowFlip Parameter done.");
 
                     Controller.Link.SetR("fb.cmd", _fbMoveBlowFlip);
                     LogToFile("Execute MoveBlowFlip Command " + Controller.Link.ListR("fb.cmd"));
@@ -1690,7 +1716,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     {
                         System.Threading.Thread.Sleep(100);
                     }
-                    LogToFile("Execute MoveBlowFlip Command done");
+                    //LogToFile("Execute MoveBlowFlip Command done");
                 });
             }
             catch (Exception ex)
@@ -1706,9 +1732,9 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             {
                 Task.Factory.StartNew(() =>
                 {
-                    LogToFile("Shake Command");
+                    //LogToFile("Shake Command");
 
-                    // Set Parameter for Shake Command ('0' means "do not modify register in FlexiBowl drive") 
+                    // Set Parameter for Shake Command ('0' means "skip modifying register in FlexiBowl drive in V+ program fb.set_param()") 
                     Controller.Link.SetR("fb.arg[1]", 0);
                     Controller.Link.SetR("fb.arg[2]", 0);
                     Controller.Link.SetR("fb.arg[3]", 0);
@@ -1729,7 +1755,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     {
                         System.Threading.Thread.Sleep(100);
                     }
-                    LogToFile("Set Shake Parameter done.");
+                    //LogToFile("Set Shake Parameter done.");
 
                     Controller.Link.SetR("fb.cmd", _fbShake);
                     LogToFile("Execute Shake Command " + Controller.Link.ListR("fb.cmd"));
@@ -1737,7 +1763,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     {
                         System.Threading.Thread.Sleep(100);
                     }
-                    LogToFile("Execute Shake Command done");
+                    //LogToFile("Execute Shake Command done");
                 });
             }
             catch (Exception ex)
@@ -1880,7 +1906,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         {
             try
             {
-                // LogToFile("V+ Memory Update:     " + vPlusVariableName + " from " + previous.ToString() + " to "+ value.ToString());
+                LogToFile("V+ Memory Update:     " + vPlusVariableName + " from " + previous.ToString() + " to "+ value.ToString());
 
                 var link = this.Controller.Link;
                 link.SetR(vPlusVariableName, value);
@@ -1907,17 +1933,15 @@ namespace Ace.OperatorInterface.Controller.ViewModel
 
             try
             {
-
                 var link = Controller?.Link;
                 if (link != null) {
                     var isDefined = link.ListR(string.Format("DEFINED({0})", vPlusVariableName));
                     if (isDefined != 0) {
                         double value = Controller.GetRealValue(vPlusVariableName);
+
                         setter(value);
                     }
                 }
-
-                //LogToFile("GetVPlusValue " + vPlusVariableName + " = " +  value.ToString());
             }
             catch (Exception ex)
             {
@@ -1927,12 +1951,33 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         }
 
         /// <summary>
-        /// BackgroundCommandMonitor - Implementation of the Action delegate. Read complete list of V+ Doubles in Custom UI. 
+        /// BackgroundCommandMonitor - Implementation of the Action-delegate 'BackgroundMonitorDelegate' from 'PropertyModifiedBase'. 
+        /// Reads complete list of V+ Doubles in Custom UI and persists active recipe to text file via 'LastActiveRecipe' property.
         /// </summary>
-        private void GetAllVPlusValues()
+        private void BackgroundMonitorMethod()
         {
             if (Controller.IsAlive)
             {
+                if (recipeManager == null) { recipeManager = RecipeManagerGetReference(); };
+                //var activeRecipe = recipeManager.ActiveRecipe;
+                if (recipeManager.ActiveRecipe != null)
+                {
+                    var recipeToken = recipeManager.ActiveRecipe.CreateRecipeReference();
+                    using (recipeToken)
+                    {
+                        if (LastActiveRecipe != recipeToken.Recipe.Name)
+                        {
+                            LastActiveRecipe = recipeToken.Recipe.Name;
+                            LogToFile("Background Task: Update new 'LastActiveRecipe' with '" + recipeToken.Recipe.Name+"'");
+                        }
+                    }
+                }
+                else
+                {
+                    if (LastActiveRecipe != "New FlexiBowl Recipe")
+                        LastActiveRecipe = "New FlexiBowl Recipe";
+                }
+ 
                 GetVPlusValue("fbl.backlight", nameof(FlexiBowlBackLight), (a) => FlexiBowlBackLight = a);
                 GetVPlusValue("fbl.mf.angle", nameof(MoveFlipAngle), (a) => MoveFlipAngle = a);
                 GetVPlusValue("fbl.mf.acc", nameof(MoveFlipAcc), (a) => MoveFlipAcc = a);
@@ -2021,16 +2066,8 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         /// <param name="previous"></param>
         /// <param name="value"></param>
         /// <param name="success"></param>
-        private void UpdateRecipeManager(string vplusVariableName,double previous, ref double value, out bool success)
+        private void RecipeManagerUpdate(string vplusVariableName,double previous, ref double value, out bool success)
         {
-            if (recipeManager == null) {
-                // Get the RecipeManger reference
-                recipeManager = GetRecipeManagerReference();
-            };
-            
-            // Enforce activate recipe to store FlexiBowl data in
-            SelectRecipe(recipeManager);
-
             if (!Controller.IsAlive)
             {
                 LogToFile("** Update Recipe: No Controller Connection **");
@@ -2038,6 +2075,29 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                 success = false;
                 return;
             }
+
+            // Get the RecipeManger reference
+            if (recipeManager == null) {
+                recipeManager = RecipeManagerGetReference();
+                if (recipeManager == null)
+                {
+                    LogToFile("** Update Recipe: No Recipe Manager reference **");
+                    OnReportError("** Cannot update recipe without Recipe Manager reference **");
+                    success = false;
+                    return;
+                }
+            };
+            
+            // Enforce activate recipe to store FlexiBowl-data in
+            success = RecipeSelect(recipeManager);
+            if (!success)
+            {
+                LogToFile("** Update Recipe: No Recipe selected in RecipeManager "+ recipeManager.Name + " **");
+                OnReportError("** Cannot update recipe without a recipe selected in RecipeManager " + recipeManager.Name + " **");
+                success = false;
+                return;
+            }
+
 
             // Correct value to "min <= value <= max" range
             var configuration = recipeManager.Configurations.FirstOrDefault(c => c is IVPlusGlobalVariableCollectionRecipeConfiguration) as IVPlusGlobalVariableCollectionRecipeConfiguration;
@@ -2052,7 +2112,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     value = max;
             }
 
-            // Store this value to active recipe
+            // Store this value into the component of the active recipe
             var variable = Controller.Memory.Variables.GetVariableByName(vplusVariableName);
             var activeRecipe = recipeManager.ActiveRecipe;
             if (activeRecipe != null)
@@ -2077,7 +2137,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         /// Return a reference to a RecipeManager
         /// </summary>
         /// <returns> recipeManager </returns>
-        private IRecipeManager GetRecipeManagerReference()
+        public IRecipeManager RecipeManagerGetReference()
         {
             if (this.recipeManager == null)
             {
@@ -2118,27 +2178,37 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         /// Enforce having a recipe active on the current RecipeManager
         /// </summary>
         /// <param name="recipeManager"></param>
-        private void SelectRecipe(IRecipeManager recipeManager)
+        private bool RecipeSelect(IRecipeManager recipeManager)
         {
-            // No recipe selected? Default to 'New FlexiBowl Recipe'.
             if (recipeManager.ActiveRecipe == null)
             {
-                LogToFile(recipeManager.Name + " has no Recipe selected'. Will default to 'New FlexiBowl Recipe'");
+                if (File.Exists(aceAppDataFolder + @"\LastActiveRecipe.txt"))
+                {
+                    // Try loading name of last active recipe from '%APPDATA%\OMRON\ACE\LastActiveRecipe.txt'
+                    LastActiveRecipe = System.IO.File.ReadAllText(aceAppDataFolder + @"\LastActiveRecipe.txt");
+                    LogToFile(recipeManager.Name + ": Found last active recipe '"+ LastActiveRecipe+ "' in file '" + aceAppDataFolder + @"\LastActiveRecipe.txt'");
+                }
+                else
+                {
+                    // No previously selected recipe found --> default to 'New Flexibowl Recipe'
+                    // Either select existing from list of available recipes, or create a 'New Flexibowl Recipe'
+                    LastActiveRecipe = "New Flexibowl Recipe";
+                    LogToFile(recipeManager.Name + ": Select or create '" + LastActiveRecipe + "'");
+                }
 
-                // Existing list of recipes? Scan for 'New FlexiBowl Recipe' and activate if available.
+                // Scan list of available recipes and activate LastActiveRecipe if available.
                 if (recipeManager.Recipes.Length > 0)
                 {
-                    newFlexiBowlRecipeFound = false;
+                    storedRecipeFound = false;
                     foreach (IRecipeToken r in recipeManager.Recipes)
                     {
                         using (IRecipeReference rRecipeReference = r.CreateRecipeReference())
                         {
                             IRecipe rRecipe = rRecipeReference.Recipe;
-                            LogToFile(rRecipe.Name);
-
-                            if (rRecipe.Name == "New FlexiBowl Recipe")
-                            {// Yes, select 'New FlexiBowl Recipe'
-                                newFlexiBowlRecipeFound = true;
+                            if (rRecipe.Name.Contains(LastActiveRecipe))
+                            {
+                                LogToFile("Select existing '"+rRecipe.Name+"' from list if available recipes");
+                                storedRecipeFound = true;
                                 recipeManager.SelectRecipe(r, true);
                                 break;
                             }
@@ -2146,33 +2216,38 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     }
                 }
 
-                // 'New FlexiBowl Recipe' NOT found in existing list - create and activate.
-                if (!newFlexiBowlRecipeFound)
+                // LastActiveRecipe NOT found in list of available recipes - create with default values and activate.
+                if (!storedRecipeFound)
                 {
                     // Create and select 'New FlexiBowl Recipe'
-                    LogToFile("No 'New FlexiBowl recipe' found in list. Create and select.");
+                    LogToFile("No '"+LastActiveRecipe+"' found in available recipes list. Will create and select it.");
 
-                    if (!CreateAndSelectNewRecipe(recipeManager, "New Flexibowl Recipe"))
+                    //if (!RecipeCreateNewAndSelect(recipeManager, "New Flexibowl Recipe"))
+                    if (!RecipeCreateNewAndSelect(recipeManager, LastActiveRecipe))
                     {// Creating 'New FlexiBowl Recipe' failed
-                        LogToFile("FAILED! Create and select 'New FlexiBowl recipe'");
-                        OnReportError("FAILED! Create and select 'New FlexiBowl recipe'");
-                        return;
+                        //LogToFile("FAILED! Create and select 'New FlexiBowl recipe'");
+                        OnReportError("FAILED! Create and select '"+LastActiveRecipe+"'");
+                        return false;
                     };
 
                     // Creating and selecting 'New FlexiBowl Recipe' succeeded
                     // Go ahead and save to 'New FlexiBowl Recipe'
                 }
-                return;
+               
             }
+            return true;
         }
 
         /// <summary>
-        /// Create new recipe "Recipe 1", rename it to "New FlexiBowl Recipe" and select as active.
+        /// Create new recipe "Recipe 1", 
+        /// - rename it to "New FlexiBowl Recipe", 
+        /// - select as active and 
+        /// - write default values into the components
         /// </summary>
         /// <param name="recipeManager"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        private bool CreateAndSelectNewRecipe(IRecipeManager recipeManager, string name)
+        private bool RecipeCreateNewAndSelect(IRecipeManager recipeManager, string name)
         {
             try
             {
@@ -2193,7 +2268,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
                     }
                 }
 
-                // For the new recipe, enforce default values in Recipe and V+ memory 
+                // For the new recipe, enforce default values in recipe and V+ memory using the properties 
                 FlexiBowlBackLight = 0;
                 MoveFlipAngle = 45;
                 MoveFlipAcc = 250;
@@ -2229,7 +2304,7 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             }
             catch (Exception ex)
             {
-                LogToFile("Create new recipe exception: " + ex.Message);
+                LogToFile("Exception when creating new recipe: " + ex.Message);
                 return false;
             }
             return true;
@@ -2241,9 +2316,12 @@ namespace Ace.OperatorInterface.Controller.ViewModel
         /// <param name="text"></param>
         static void LogToFile(string text)
         {
-            System.IO.File.AppendAllText("C:\\temp\\log.txt", text+Environment.NewLine);
-        }
+            lock (lockObject)
+            {
+                System.IO.File.AppendAllText(aceAppDataFolder + @"\DebugCustomUI.txt", text + Environment.NewLine);
+            }
 
+        }
 
         /// <summary>
         /// Track the property changed
@@ -2263,4 +2341,66 @@ namespace Ace.OperatorInterface.Controller.ViewModel
             backgroundMonitor.Stop();
         }
     }
+
+
+
+    //interface IMultiThreadFileWriter
+    //{
+    //    // see https://softwareengineering.stackexchange.com/questions/177649/what-is-constructor-injection
+    //    void WriteLine(string line);
+    //}
+
+
+    /// <summary>
+    /// Class to use a ConcurrentQueue and a always running Task to accomplish accessing the shared Streamwriter-resource 
+    /// to be accessed from one thread only (the task running in the background) and everyone else to deliver their payload 
+    /// to a thread-safe queue.
+    /// Background: In the ControllerViewModel class the DelegateCommand implementations use Task.Factory.StartNew(...).
+    /// In the code getting started inside parallel threads we use logging to a file - which is not allowing simultaneous access
+    /// from multiple threads.
+    /// see https://briancaos.wordpress.com/2021/01/12/write-to-file-from-multiple-threads-async-with-c-and-net-core/ for details
+    /// </summary>
+    //public class MultiThreadFileWriter:IMultiThreadFileWriter
+    //{
+    //    private static ConcurrentQueue<string> _textToWrite = new ConcurrentQueue<string>();
+    //    private CancellationTokenSource _source = new CancellationTokenSource();
+    //    private CancellationToken _token;
+
+    //    public MultiThreadFileWriter()
+    //    {
+    //        _token = _source.Token;
+    //        // This is the task that will run
+    //        // in the background and do the actual file writing
+    //        Task.Run(WriteToFile, _token);
+    //    }
+
+    //    /// The public method where a thread can ask for a line
+    //    /// to be written.
+    //    public void WriteLine(string line)
+    //    {
+    //        _textToWrite.Enqueue(line);
+    //    }
+
+    //    /// The actual file writer, running
+    //    /// in the background.
+    //    private async void WriteToFile()
+    //    {
+    //        while (true)
+    //        {
+    //            if (_token.IsCancellationRequested)
+    //            {
+    //                return;
+    //            }
+    //            using (StreamWriter w = File.AppendText("c:\\myfile.txt"))
+    //            {
+    //                while (_textToWrite.TryDequeue(out string textLine))
+    //                {
+    //                    await w.WriteLineAsync(textLine);
+    //                }
+    //                w.Flush();
+    //                Thread.Sleep(100);
+    //            }
+    //        }
+    //    }
+    //}
 }

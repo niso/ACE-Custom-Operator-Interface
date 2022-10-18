@@ -67,12 +67,15 @@ namespace Ace.OperatorInterface.View {
         }
 
         private void UpdateSelectedItem(object sender) {
-            ListBoxItem selectedItem = (ListBoxItem) listBoxControllers.ItemContainerGenerator.
-                  ContainerFromItem(((FrameworkElement) sender).DataContext);
-            selectedItem.IsSelected = true;
 
+            if (sender != null)
+            {
+                ListBoxItem selectedItem = (ListBoxItem)listBoxControllers.ItemContainerGenerator.ContainerFromItem(((FrameworkElement)sender).DataContext);
+                if (selectedItem != null)
+                {
+                    selectedItem.IsSelected = true;
+                }
+            }
         }
     }
 }
-
-
