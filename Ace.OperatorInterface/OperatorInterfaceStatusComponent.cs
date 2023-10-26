@@ -101,6 +101,8 @@ namespace Ace.OperatorInterface
 
         public Entity Entity => throw new NotImplementedException();
 
+        public bool IsSupported => throw new NotImplementedException();
+
         /// <summary>
         /// constructor
         /// </summary>
@@ -201,6 +203,11 @@ namespace Ace.OperatorInterface
             {
                 ViewModel.UpdateControllerCollection();
             }
+        }
+
+        public void OnAdded()
+        {
+            throw new NotImplementedException();
         }
     }
 }
