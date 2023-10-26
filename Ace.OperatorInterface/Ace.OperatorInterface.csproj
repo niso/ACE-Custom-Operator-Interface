@@ -35,15 +35,15 @@
   <ItemGroup>
     <Reference Include="Ace.Communication, Version=4.5.3.50, Culture=neutral, PublicKeyToken=e79443b8f063fbad, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Omron\ACE 4.6\bin\Modules\Ace\Ace.Communication.dll</HintPath>
+      <HintPath>C:\Program Files\Omron\ACE 4.7\bin\Modules\Ace\Ace.Communication.dll</HintPath>
     </Reference>
     <Reference Include="Ace.Core, Version=4.5.3.50, Culture=neutral, PublicKeyToken=e79443b8f063fbad, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Omron\ACE 4.6\bin\Modules\Ace\Ace.Core.dll</HintPath>
+      <HintPath>C:\Program Files\Omron\ACE 4.7\bin\Modules\Ace\Ace.Core.dll</HintPath>
     </Reference>
     <Reference Include="Omron.Cxap.Framework.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9f8cd6ce856ce25c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Omron\ACE 4.6\bin\Modules\Ace\Omron.Cxap.Framework.Core.dll</HintPath>
+      <HintPath>C:\Program Files\Omron\ACE 4.7\bin\Modules\Ace\Omron.Cxap.Framework.Core.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
